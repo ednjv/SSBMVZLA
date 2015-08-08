@@ -20,6 +20,9 @@
 		'value'=>'$data->idTorneo->nombre',
 	),
 	'ronda',
+	'numero_ronda',
+	'elo_jugador_1',
+	'elo_jugador_2',
 array(
 'class'=>'booster.widgets.TbButtonColumn',
 ),

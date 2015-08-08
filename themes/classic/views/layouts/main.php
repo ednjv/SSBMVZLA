@@ -45,6 +45,16 @@
 							'url'=>array('jugador/admin'),
 						),
 						array(
+							'label'=>'Ranking',
+							'url'=>array('jugadorRanking/admin'),
+							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
+						),
+						array(
+							'label'=>'Temp Ranking',
+							'url'=>array('jugadorRankTemp/admin'),
+							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
+						),
+						array(
 							'label'=>'PVP Sets',
 							'url'=>array('pvpSet/admin'),
 							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),

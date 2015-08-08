@@ -52,7 +52,10 @@ $selectTorneos=Torneo::model()->selectTorneos();
 if(isset($_POST['PvpSet']))
 {
 $model->attributes=$_POST['PvpSet'];
+$model->elo_jugador_1=0;
+$model->elo_jugador_2=0;
 if($model->save()){
+	$model->calcularRanking($model);
 	$user->setFlash('success', "Datos han sido guardados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('create'));
 }
@@ -84,9 +87,10 @@ if(isset($_POST['PvpSet']))
 {
 $model->attributes=$_POST['PvpSet'];
 if($model->save()){
-			$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
-			$this->redirect(array('admin'));
-		}
+	$model->calcularRanking($model);
+	$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
+	$this->redirect(array('admin'));
+}
 }
 
 $this->render('update',array(
@@ -166,5 +170,10 @@ if(isset($_POST['ajax']) && $_POST['ajax']==='pvp-set-form')
 echo CActiveForm::validate($model);
 Yii::app()->end();
 }
+}
+
+public function actioncalcularRanking(){
+	$model=PvpSet::model()->findByPk(1);
+	$ranking=PvpSet::model()->calcularRanking($model);
 }
 }
