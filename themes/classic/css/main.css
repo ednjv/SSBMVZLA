@@ -1,0 +1,139 @@
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+body {
+    margin-bottom: 60px;
+}
+.footer {
+    bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 1001;
+}
+body > .container-fluid {
+    padding: 50px 0 0;
+}
+.footer > .container-fluid {
+    background-color: #263238;
+    color: #ffffff;
+    font-size: 12px;
+    padding-top: 5px;
+}
+.panel {
+    border-radius: 0;
+}
+.navbar-fixed-top {
+    border: 0 none;
+}
+#sidebar {
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+    bottom: 0;
+    display: none;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+    position: fixed;
+    top: 51px;
+    z-index: 1000;
+}
+#sidebar-toggle {
+    display: none;
+}
+.breadcrumb {
+    border-radius: 0;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+@media (min-width: 768px) {
+#sidebar {
+    display: block;
+    transition: all 0.3s ease 0s;
+}
+#hiddenMenu {
+    display: none;
+}
+#sidebar-toggle {
+    display: block;
+}
+#main {
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all 0.3s ease 0s;
+}
+.breadcrumb {
+    margin-left: -20px;
+    margin-right: -20px;
+}
+}
+.nav-sidebar {
+    margin-bottom: 20px;
+}
+.nav-sidebar > li > a {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.nav-sidebar > .nav-header {
+    color: #858585;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 3px 15px;
+    text-transform: uppercase;
+}
+.navbar-inverse #sidebar-toggle .icon-bar {
+    background-color: #fff;
+}
+#sidebar-toggle {
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    float: left;
+    margin-bottom: 8px;
+    margin-right: 15px;
+    margin-top: 8px;
+    padding: 9px 10px;
+    position: relative;
+}
+#sidebar-toggle:focus {
+    outline: 0 none;
+}
+#sidebar-toggle .icon-bar {
+    border-radius: 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+}
+#sidebar-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
+}
+#topMenu > #profileBtn {
+    position: inherit;
+}
+#profileBtn {
+    position: inherit;
+}
+#profileBox {
+    float: right !important;
+    padding: 0;
+}
+.navbar-content {
+    padding: 15px 15px 0;
+    width: 320px;
+}
+.navbar-footer {
+    background-color: #ddd;
+}
+.navbar-footer-content {
+    padding: 15px;
+}
+.button-column {
+    min-width: 90px !important;
+}
