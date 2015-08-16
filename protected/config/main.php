@@ -90,9 +90,9 @@ return array(
 
 		// database settings are configured in database.php
 		'db'=>array(
-			'connectionString'=>'mysql:host=sql303.byethost11.com;dbname=b11_16490221_ssbmvzla',
-			'username'=>'b11_16490221',
-			'password'=>'koololimpha',
+			'connectionString'=>'mysql:host=localhost;dbname=ssbmvzla',
+			'username'=>'root',
+			'password'=>'',
 			'charset'=>'utf8',
 		),
 

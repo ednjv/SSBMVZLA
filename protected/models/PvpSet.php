@@ -171,120 +171,75 @@ class PvpSet extends CActiveRecord
 	 * Fuente: https://es.wikipedia.org/wiki/Sistema_de_puntuación_Elo
 	 * @param integer $elo1, puntaje ELO del jugador 1
 	 * @param integer $elo2, puntaje ELO del jugador 2
-	 * @param integer $S, resultado del enfrentamiento, 0=Perdió, 1=Ganó
+	 * @param integer $S, resultado del enfrentamiento en relacion al jugador 1, 0=Perdió, 1=Ganó
 	 * @param integer $K, constante de ajuste del puntaje
 	*/
-	public function calcularElo($elo1,$elo2,$S,$K=16){
-		$esperado=1/(1+(pow(10,($elo2-$elo1)/400)));
-		$nuevoRating=$elo1+$K*($S-$esperado);
-		return $nuevoRating;
+	public function calcularElo($elo1,$elo2,$S,$K){
+		$esperado1=1/(1+(pow(10,($elo2-$elo1)/400)));
+		$nuevoRating1=$elo1+$K*($S-$esperado1);
+		return round($nuevoRating1);
 	}
 
-	/*
-		1. Crear el set con elos=0
-		2. Verificar cuantos sets tienen las personas
-		3. Verificar si alguno no tiene ranking
-		4. Si uno tiene ranking y el otro no, no modificar los datos del ranking del que tiene y pasar al que no tiene al rank_temporal
-		5. Si el que no tiene ranking ya tiene mas de 3 sets verificar pasarlo al ranking pero sin modificar los datos de su adversario
-		3. Si tienen hacer los calculos en base a su ranking actual (fecha asc numero ronda asc)
-		4. Si no tienen, crearlos con 1000 puntos en el jugador_rank_temp
+	/**
+	 * Función que calcula los puntajes de los jugadores que se enfrentan
+	 * @param object $model, modelo del PvPSet
 	*/
 	public function calcularRanking($model){
 		$hasRank1=false;
 		$hasRank2=false;
 		$hasTempRank1=false;
 		$hasTempRank2=false;
-		$findRanking1=JugadorRanking::model()->find(array(
-			'condition'=>'id_jugador=:id_jugador1',
+		$count1=0;
+		$count2=0;
+		$modelRank="JugadorRankTemp";
+		$findRanking1=JugadorRankTemp::model()->find(array(
+			'condition'=>'id_jugador=:id_jugador1 AND status=1',
 			'params'=>array(':id_jugador1'=>$model->id_jugador_1),
-			'with'=>array('idPvpSet'=>array('with'=>array('idTorneo'))),
-			'order'=>'idTorneo.fecha, numero_ronda',
 		));
-		$findRanking2=JugadorRanking::model()->find(array(
-			'condition'=>'id_jugador=:id_jugador2',
-			'params'=>array(':id_jugador2'=>$model->id_jugador_2),
-			'with'=>array('idPvpSet'=>array('with'=>array('idTorneo'))),
-			'order'=>'idTorneo.fecha, numero_ronda',
-		));
-		if($findRanking1==null){
-			$findRankingTemp1=JugadorRankTemp::model()->find(array(
-				'condition'=>'id_jugador=:id_jugador1',
-				'params'=>array(':id_jugador1'=>$model->id_jugador_1),
-				'with'=>array('idPvpSet'=>array('with'=>array('idTorneo'))),
-				'order'=>'idTorneo.fecha, numero_ronda',
+		if($findRanking1!=null){
+			$count1=PvpSet::model()->count(array(
+				'condition'=>'(id_jugador_1=:id_jugador1 OR id_jugador_2=:id_jugador1) AND (elo_jugador_1>0 OR elo_jugador_2>0)',
+				'params'=>array(':id_jugador1'=>$model->id_jugador_1)
 			));
-			if($findRankingTemp1==null){
-				$newTempRank1=new JugadorRankTemp;
-				$newTempRank1->id_pvp_set=$model->id;
-				$newTempRank1->id_jugador=$model->id_jugador_1;
-				$newTempRank1->puntos=1000;
-				$newTempRank1->save();
-			}else{
-				$count1=JugadorRankTemp::model()->count(array(
-					'condition'=>'id_jugador=:id_jugador1',
-					'params'=>array(':id_jugador1'=>$model->id_jugador_1)
-				));
-				$hasTempRank1=true;
-			}
-		}else{
 			$hasRank1=true;
 		}
-		if($findRanking2==null){
-			$findRankingTemp2=JugadorRankTemp::model()->find(array(
-				'condition'=>'id_jugador=:id_jugador2',
-				'params'=>array(':id_jugador2'=>$model->id_jugador_2),
-				'with'=>array('idPvpSet'=>array('with'=>array('idTorneo'))),
-				'order'=>'idTorneo.fecha, numero_ronda',
+		$findRanking2=JugadorRankTemp::model()->find(array(
+			'condition'=>'id_jugador=:id_jugador2 AND status=1',
+			'params'=>array(':id_jugador2'=>$model->id_jugador_2),
+		));
+		if($findRanking2!=null){
+			$count2=PvpSet::model()->count(array(
+				'condition'=>'(id_jugador_1=:id_jugador2 OR id_jugador_2=:id_jugador2) AND (elo_jugador_1>0 OR elo_jugador_2>0)',
+				'params'=>array(':id_jugador2'=>$model->id_jugador_2)
 			));
-			if($findRankingTemp2==null){
-				$newTempRank2=new JugadorRankTemp;
-				$newTempRank2->id_pvp_set=$model->id;
-				$newTempRank2->id_jugador=$model->id_jugador_2;
-				$newTempRank2->puntos=1000;
-				$newTempRank2->save();
-			}else{
-				$count2=JugadorRankTemp::model()->count(array(
-					'condition'=>'id_jugador=:id_jugador2',
-					'params'=>array(':id_jugador2'=>$model->id_jugador_2)
-				));
-				$hasTempRank2=true;
-			}
-		}else{
 			$hasRank2=true;
 		}
 		switch(true){
 			case $hasRank1==true && $hasRank2==true:
-				PvpSet::model()->crearRank($model,$findRanking1->puntos,$findRanking2->puntos,"JugadorRanking",true,true);
+				PvpSet::model()->crearRank($model,$findRanking1->puntos,$findRanking2->puntos,$modelRank,$count1,$count2);
 				break;
 			case $hasRank1==true && $hasRank2==false:
-				if($hasTempRank2==true){
-					if($count2>4){
-						PvpSet::model()->crearRank($model,$findRanking1->puntos,$findRankingTemp2->puntos,"JugadorRanking",false,true);	
-					}else{
-						PvpSet::model()->crearRank($model,$findRanking1->puntos,$findRankingTemp2->puntos,"JugadorRankTemp",false,true);	
-					}
-				}else{
-					PvpSet::model()->crearRank($model,$findRanking1->puntos,1000,"JugadorRankTemp",false,true);
-				}
+				PvpSet::model()->crearRank($model,$findRanking1->puntos,2000,$modelRank,$count1,$count2);
 				break;
 			case $hasRank1==false && $hasRank2==true:
-				if($hasTempRank1==true){
-					if($count1>4){
-						PvpSet::model()->crearRank($model,$findRankingTemp1->puntos,$findRanking2->puntos,"JugadorRanking",true,false);
-					}else{
-						PvpSet::model()->crearRank($model,$findRankingTemp1->puntos,$findRanking2->puntos,"JugadorRankTemp",true,false);
-					}
-				}else{
-					PvpSet::model()->crearRank($model,1000,$findRanking2->puntos,"JugadorRankTemp",true,false);
-				}
+				PvpSet::model()->crearRank($model,2000,$findRanking2->puntos,$modelRank,$count1,$count2);
 				break;
 			case $hasRank1==false && $hasRank2==false:
-				PvpSet::model()->crearRank($model,1000,1000,"JugadorRankTemp",true,true);
+				PvpSet::model()->crearRank($model,2000,2000,$modelRank,$count1,$count2);
 				break;
 		}
 	}
 
-	public function crearRank($model,$puntosJug1,$puntosJug2,$modelRankName,$save1,$save2){
+	/**
+	 * Función que genera los ranking de los jugadores
+	 * @param object $model, modelo del PvPSet
+	 * @param integer $puntosJug1, puntos del jugador 1
+	 * @param integer $puntosJug2, puntos del jugador 2
+	 * @param string $modelRankName, nombre del modelo a guardar
+	 * @param integer $count1, cantidad de registros en el ranking del jugador 1
+	 * @param integer $count2, cantidad de registros en el ranking del jugador 2
+	*/
+	public function crearRank($model,$puntosJug1,$puntosJug2,$modelRankName,$count1,$count2){
 		$model->elo_jugador_1=$puntosJug1;
 		$model->elo_jugador_2=$puntosJug2;
 		$model->save();
@@ -295,21 +250,43 @@ class PvpSet extends CActiveRecord
 			$res1=1;
 			$res2=0;
 		}
-		if($save1==true){
-			$nuevoElo1=PvpSet::model()->calcularElo($puntosJug1,$puntosJug2,$res1);
-			$ranking1=new $modelRankName;
-			$ranking1->id_jugador=$model->id_jugador_1;
-			$ranking1->id_pvp_set=$model->id;
-			$ranking1->puntos=$nuevoElo1;
-			$ranking1->save();
+		if($count1>3 && $puntosJug1<2400){
+			$K1=20;
+		}else{
+			if($count1<=3){
+				$K1=40;
+			}else{
+				if($count1>3 && $puntosJug1>=2400){
+					$K1=10;
+				}
+			}
 		}
-		if($save2==true){
-			$nuevoElo2=PvpSet::model()->calcularElo($puntosJug2,$puntosJug1,$res2);
-			$ranking2=new $modelRankName;
-			$ranking2->id_jugador=$model->id_jugador_2;
-			$ranking2->id_pvp_set=$model->id;
-			$ranking2->puntos=$nuevoElo2;
-			$ranking2->save();
+		$nuevoElo1=PvpSet::model()->calcularElo($puntosJug1,$puntosJug2,$res1,$K1);
+		$ranking1=new $modelRankName;
+		$ranking1->id_jugador=$model->id_jugador_1;
+		$ranking1->puntos=$nuevoElo1;
+		$ranking1->fecha=date('Y-m-d h:i:s');
+		$ranking1->status=1;
+		$ranking1->posicion=0;
+		$ranking1->save();
+		if($count2>3 && $puntosJug2<2400){
+			$K2=20;
+		}else{
+			if($count2<=3){
+				$K2=40;
+			}else{
+				if($count2>3 && $puntosJug2>=2400){
+					$K2=10;
+				}
+			}
 		}
+		$nuevoElo2=PvpSet::model()->calcularElo($puntosJug2,$puntosJug1,$res2,$K2);
+		$ranking2=new $modelRankName;
+		$ranking2->id_jugador=$model->id_jugador_2;
+		$ranking2->puntos=$nuevoElo2;
+		$ranking2->fecha=date('Y-m-d h:i:s');
+		$ranking2->status=1;
+		$ranking2->posicion=0;
+		$ranking2->save();
 	}
 }

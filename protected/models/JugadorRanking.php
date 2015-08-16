@@ -6,15 +6,17 @@
  * The followings are the available columns in table 'jugador_ranking':
  * @property integer $id
  * @property integer $id_jugador
- * @property integer $id_pvp_set
  * @property integer $puntos
+ * @property integer $posicion
+ * @property integer $status
  *
  * The followings are the available model relations:
  * @property Jugador $idJugador
- * @property PvpSet $idPvpSet
  */
 class JugadorRanking extends CActiveRecord
 {
+	public $nickAux;
+	public $cambio;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -31,11 +33,11 @@ class JugadorRanking extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_jugador, id_pvp_set, puntos', 'required'),
-			array('id_jugador, id_pvp_set, puntos', 'numerical', 'integerOnly'=>true),
+			array('id_jugador, puntos', 'required'),
+			array('id_jugador, puntos, posicion, status', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_jugador, id_pvp_set, puntos', 'safe', 'on'=>'search'),
+			array('id, id_jugador, puntos, posicion, status, nickAux', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,7 +50,6 @@ class JugadorRanking extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idJugador' => array(self::BELONGS_TO, 'Jugador', 'id_jugador'),
-			'idPvpSet' => array(self::BELONGS_TO, 'PvpSet', 'id_pvp_set'),
 		);
 	}
 
@@ -60,8 +61,10 @@ class JugadorRanking extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'id_jugador' => 'Id Jugador',
-			'id_pvp_set' => 'Id Pvp Set',
 			'puntos' => 'Puntos',
+			'posicion' => 'Posicion',
+			'status' => 'Status',
+			'nickAux' => 'Nick',
 		);
 	}
 
@@ -83,13 +86,28 @@ class JugadorRanking extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->condition='status=1';
 		$criteria->compare('id',$this->id);
 		$criteria->compare('id_jugador',$this->id_jugador);
-		$criteria->compare('id_pvp_set',$this->id_pvp_set);
 		$criteria->compare('puntos',$this->puntos);
+		$criteria->compare('posicion',$this->posicion);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('idJugador.nick',$this->nickAux,true);
+		$criteria->with=array('idJugador');
+
+		$sort=new CSort;
+		$sort->defaultOrder='posicion';
+		$sort->attributes=array(
+			'*',
+			'nickAux'=>array(
+				'asc'=>'idJugador.nick',
+				'desc'=>'idJugador.nick desc',
+			),
+		);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>$sort,
 		));
 	}
 
@@ -102,5 +120,57 @@ class JugadorRanking extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	protected function beforeSave(){
+		if($this->isNewRecord){
+			$this->updateAll(array('status'=>0),'id_jugador=:id_jugador',array(':id_jugador'=>$this->id_jugador));
+		}
+		return parent::beforeSave();
+	}
+
+	public function calcularPosiciones(){
+		$busqAll=JugadorRankTemp::model()->findAll(array(
+			'condition'=>'status=1',
+			'order'=>'puntos desc',
+		));
+		$i=1;
+		foreach($busqAll as $rankJug){
+			$rankJug->isNewRecord=false;
+			$rankJug->saveAttributes(array(
+				'posicion'=>$i,
+			));
+			$i++;
+		}
+	}
+
+	public function getCambio($idjugador){
+		$rankUltimo=JugadorRanking::model()->find(array(
+			'condition'=>'id_jugador=:idjug AND status=0',
+			'params'=>array(':idjug'=>$idjugador),
+			'order'=>'fecha desc',
+			'limit'=>1,
+		));
+		if($rankUltimo==null){
+			return "...";
+		}else{
+			$rankActual=JugadorRanking::model()->find(array(
+				'condition'=>'id_jugador=:idjug AND status=1',
+				'params'=>array(':idjug'=>$idjugador),
+			));
+			if($rankActual->posicion>$rankUltimo->posicion){
+				$diferencia=$rankActual->posicion-$rankUltimo->posicion;
+				return "<span style='color:red;'>".$diferencia." ".CHtml::tag('i',array('class'=>'glyphicon glyphicon-chevron-down'))."</span>";
+			}else{
+				if($rankActual->posicion==$rankUltimo->posicion){
+					return "...";
+				}else{
+					if($rankUltimo->posicion>$rankActual->posicion){
+						$diferencia=$rankUltimo->posicion-$rankActual->posicion;
+						return "<span style='color:green;'>".$diferencia." ".CHtml::tag('i',array('class'=>'glyphicon glyphicon-chevron-up'))."</span>";
+					}
+				}
+			}
+		}
 	}
 }

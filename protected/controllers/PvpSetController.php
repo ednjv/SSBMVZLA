@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit(900);
+
 class PvpSetController extends Controller
 {
 
@@ -55,7 +57,6 @@ $model->attributes=$_POST['PvpSet'];
 $model->elo_jugador_1=0;
 $model->elo_jugador_2=0;
 if($model->save()){
-	$model->calcularRanking($model);
 	$user->setFlash('success', "Datos han sido guardados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('create'));
 }
@@ -87,7 +88,6 @@ if(isset($_POST['PvpSet']))
 {
 $model->attributes=$_POST['PvpSet'];
 if($model->save()){
-	$model->calcularRanking($model);
 	$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('admin'));
 }
@@ -172,8 +172,53 @@ Yii::app()->end();
 }
 }
 
-public function actioncalcularRanking(){
-	$model=PvpSet::model()->findByPk(1);
-	$ranking=PvpSet::model()->calcularRanking($model);
+public function actionGetChart(){
+	$id=$_POST['id'];
+	if($id!=""){
+		$rankJugId=JugadorRanking::model()->findByPk($id);
+		$jugador=Jugador::model()->findByPk($rankJugId->id_jugador);
+		$sets=PvpSet::model()->findAll(array(
+			'condition'=>'(id_jugador_1=:idJug OR id_jugador_2=:idJug) AND (elo_jugador_1>0 OR elo_jugador_2>0)',
+			'params'=>array(':idJug'=>$rankJugId->id_jugador),
+			'order'=>'numero_ronda',
+		));
+		return $this->renderPartial('_chartJug',array(
+			'sets'=>$sets,
+			'jugador'=>$jugador,
+		),false,true);
+	}
+}
+
+public function actionElo($id){
+	$user=Yii::app()->user;
+	$busq=PvpSet::model()->findAll(array(
+		'condition'=>'id_torneo=:id_torneo',
+		'params'=>array(':id_torneo'=>$id),
+		'order'=>'numero_ronda',
+	));
+	foreach ($busq as $pvpset) {
+		PvpSet::model()->calcularRanking($pvpset);
+	}
+	JugadorRankTemp::model()->calcularPosiciones();
+	$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
+	$this->redirect(array('admin'));
+}
+
+public function actionImportRank(){
+	$user=Yii::app()->user;
+	$busqRankTemp=JugadorRankTemp::model()->findAll(array(
+		'condition'=>'status=1',
+	));
+	foreach ($busqRankTemp as $rnkTmp) {
+		$newRank=new JugadorRanking;
+		$newRank->id_jugador=$rnkTmp->id_jugador;
+		$newRank->puntos=$rnkTmp->puntos;
+		$newRank->fecha=date("Y-m-d h:i:s");
+		$newRank->status=$rnkTmp->status;
+		$newRank->posicion=$rnkTmp->posicion;
+		$newRank->save();
+	}
+	$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
+	$this->redirect(array('admin'));
 }
 }

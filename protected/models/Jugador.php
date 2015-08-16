@@ -207,17 +207,20 @@ class Jugador extends CActiveRecord
 		return $wins." W - ".$loses. " L";
 	}
 
-	public function getPersonajes($idJugador){
+	public function getPersonajes($idJugador,$primary=false){
 		$personajes=JugadorPersonaje::model()->findAll(array(
 			'condition'=>'id_jugador=:idJugador',
 			'params'=>array(':idJugador'=>$idJugador),
-			'order'=>'primario',
+			'order'=>'primario desc',
 		));
 		$imagenes="";
 		$countP=count($personajes);
 		if($countP>0){
 			foreach ($personajes as $personaje){
 				$imagenes=CHtml::image(Yii::app()->BaseUrl."/images/".$personaje->idPersonaje->imagen)." ".$imagenes;
+				if($primary==true){
+					return $imagenes;
+				}
 			}
 		}
 		return $imagenes;

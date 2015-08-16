@@ -5,8 +5,9 @@
 'columns'=>array(
 		'id',
 		'id_jugador',
-		'id_pvp_set',
 		'puntos',
+		'posicion',
+		'status',
 array(
 'class'=>'booster.widgets.TbButtonColumn',
 ),

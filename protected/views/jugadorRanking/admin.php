@@ -1,11 +1,5 @@
-<?php
-$this->breadcrumbs=array(
-	'Jugador Rankings'=>array('admin'),
-	'Administrar',
-);
-?>
 <?php $this->Widget('booster.widgets.TbPanel', array(
-	    'title' => 'Administrar Jugador Rankings',
+	    'title' => 'SSBM Venezuela Ranking',
     	'headerIcon' => 'icon-th-list ',
     	'headerHtmlOptions'=>array('style'=>'padding-bottom:5px;'),
     	'headerButtons' => array(
@@ -14,7 +8,7 @@ $this->breadcrumbs=array(
                 'htmlOptions'=>array('style'=>'margin-top:-5px;'),
                 'size'=>'small',
                 'buttons'=>array(
-                    array('label'=>'Nuevo registro', 'buttonType'=>'link', 'icon'=>'plus', 'url'=>array('create')),
+                    //array('label'=>'Nuevo registro', 'buttonType'=>'link', 'icon'=>'plus', 'url'=>array('create')),
                 ),
             ),
         ),

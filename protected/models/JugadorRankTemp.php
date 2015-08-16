@@ -6,12 +6,13 @@
  * The followings are the available columns in table 'jugador_rank_temp':
  * @property integer $id
  * @property integer $id_jugador
- * @property integer $id_pvp_set
  * @property integer $puntos
+ * @property integer $posicion
+ * @property integer $status
+ * @property string $fecha
  *
  * The followings are the available model relations:
  * @property Jugador $idJugador
- * @property PvpSet $idPvpSet
  */
 class JugadorRankTemp extends CActiveRecord
 {
@@ -31,11 +32,11 @@ class JugadorRankTemp extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_jugador, id_pvp_set, puntos', 'required'),
-			array('id_jugador, id_pvp_set, puntos', 'numerical', 'integerOnly'=>true),
+			array('id_jugador, puntos, posicion, status, fecha', 'required'),
+			array('id_jugador, puntos, posicion, status', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_jugador, id_pvp_set, puntos', 'safe', 'on'=>'search'),
+			array('id, id_jugador, puntos, posicion, status, fecha', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,7 +49,6 @@ class JugadorRankTemp extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idJugador' => array(self::BELONGS_TO, 'Jugador', 'id_jugador'),
-			'idPvpSet' => array(self::BELONGS_TO, 'PvpSet', 'id_pvp_set'),
 		);
 	}
 
@@ -60,8 +60,10 @@ class JugadorRankTemp extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'id_jugador' => 'Id Jugador',
-			'id_pvp_set' => 'Id Pvp Set',
 			'puntos' => 'Puntos',
+			'posicion' => 'Posicion',
+			'status' => 'Status',
+			'fecha' => 'Fecha',
 		);
 	}
 
@@ -85,8 +87,10 @@ class JugadorRankTemp extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('id_jugador',$this->id_jugador);
-		$criteria->compare('id_pvp_set',$this->id_pvp_set);
 		$criteria->compare('puntos',$this->puntos);
+		$criteria->compare('posicion',$this->posicion);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('fecha',$this->fecha,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -102,5 +106,27 @@ class JugadorRankTemp extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	protected function beforeSave(){
+		if($this->isNewRecord){
+			$this->updateAll(array('status'=>0),'id_jugador=:id_jugador',array(':id_jugador'=>$this->id_jugador));
+		}
+		return parent::beforeSave();
+	}
+
+	public function calcularPosiciones(){
+		$busqAll=JugadorRankTemp::model()->findAll(array(
+			'condition'=>'status=1',
+			'order'=>'puntos desc',
+		));
+		$i=1;
+		foreach($busqAll as $rankJug){
+			$rankJug->isNewRecord=false;
+			$rankJug->saveAttributes(array(
+				'posicion'=>$i,
+			));
+			$i++;
+		}
 	}
 }
