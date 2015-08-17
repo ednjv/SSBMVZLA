@@ -79,7 +79,7 @@ class Jugador extends CActiveRecord
 			'id_estado' => 'Id Estado',
 			'estadoAux' => 'Estado',
 			'paisAux' => 'País',
-			'personajes' => 'Personaje',
+			'personajes' => 'Personajes',
 			'winrateAux' => 'Win Rate',
 			'recordAux' => 'Récord',
 		);

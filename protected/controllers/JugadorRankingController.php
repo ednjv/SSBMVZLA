@@ -20,8 +20,24 @@ public $layout='//layouts/column1';
 public function filters()
 {
 return array(
-'rights', // perform access control for CRUD operations
-'postOnly + delete', // we only allow deletion via POST request
+'accessControl', // perform access control for CRUD operations
+);
+}
+
+public function accessRules()
+{
+return array(
+array('allow',
+	'actions'=>array('update','delete','index','create'),
+	'users'=>array('Administrador'),
+),
+array('allow',
+	'actions'=>array('view','admin','GetChart'),
+	'users'=>array('*'),
+),
+array('deny',
+	'users'=>array('*'),
+),
 );
 }
 
@@ -125,6 +141,7 @@ $this->render('index',array(
 */
 public function actionAdmin()
 {
+$lastUpdate=strftime("%d/%m/%Y",strtotime(str_replace("-", "/", JugadorRanking::model()->find('status=1')->fecha)));
 $model=new JugadorRanking('search');
 $model->unsetAttributes();  // clear any default values
 if(isset($_GET['JugadorRanking']))
@@ -132,6 +149,7 @@ $model->attributes=$_GET['JugadorRanking'];
 
 $this->render('admin',array(
 'model'=>$model,
+'lastUpdate'=>$lastUpdate,
 ));
 }
 
@@ -159,5 +177,22 @@ if(isset($_POST['ajax']) && $_POST['ajax']==='jugador-ranking-form')
 echo CActiveForm::validate($model);
 Yii::app()->end();
 }
+}
+
+public function actionGetChart(){
+	$id=$_POST['id'];
+	if($id!=""){
+		$rankJugId=JugadorRanking::model()->findByPk($id);
+		$jugador=Jugador::model()->findByPk($rankJugId->id_jugador);
+		$sets=PvpSet::model()->chartSets($rankJugId->id_jugador);
+		$vsJugador=PvpSet::model()->chartVsJugadores($sets,$jugador->id);
+		$ptsVs=PvpSet::model()->chartPtsVs($sets,$jugador->id);
+		$this->renderPartial('_chartJug',array(
+			'sets'=>$sets,
+			'jugador'=>$jugador,
+			'vsJugador'=>$vsJugador,
+			'ptsVs'=>$ptsVs,
+		),false,true);
+	}
 }
 }

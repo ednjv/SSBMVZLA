@@ -1,3 +1,4 @@
+<?php echo "Actualizado el: ".$lastUpdate; ?>
 <div class='row-fluid'>
 	<div class='col-md-5'>
 		<?php $this->widget('booster.widgets.TbGridView',array(
@@ -9,24 +10,24 @@
 		'columns'=>array(
 			array(
 				'name'=>'posicion',
-				'htmlOptions'=>array('width'=>'5%'),
+				'htmlOptions'=>array('width'=>'5%','style'=>'cursor:pointer;'),
 			),
 			array(
 				'name'=>'nickAux',
 				'value'=>'$data->idJugador->nick." ".$data->idJugador->getPersonajes($data->idJugador->id,true)',
 				'type'=>'raw',
-				'htmlOptions'=>array('width'=>'30%'),
+				'htmlOptions'=>array('width'=>'30%','style'=>'cursor:pointer;'),
 			),
 			array(
 				'name'=>'puntos',
 				'value'=>'number_format($data->puntos,0,".",",")',
-				'htmlOptions'=>array('width'=>'55%','style'=>'text-align:right;'),
+				'htmlOptions'=>array('width'=>'55%','style'=>'text-align:right; cursor:pointer;'),
 			),
 			array(
 				'name'=>'cambio',
 				'value'=>'$data->getCambio($data->id_jugador)',
 				'type'=>'raw',
-				'htmlOptions'=>array('width'=>'10%','style'=>'text-align:right;'),
+				'htmlOptions'=>array('width'=>'10%','style'=>'text-align:right; cursor:pointer;'),
 			),
 		array(
 		'template'=>'',
@@ -35,7 +36,9 @@
 		),
 		)); ?>
 	</div>
-	<div id="chart" class='col-md-7'></div>
+	<div class='col-md-7'>
+		<div id="chartJug" class='col-md-12'></div>
+	</div>
 </div>
 
 <script>
@@ -45,10 +48,10 @@ function getChart(id){
 	$.ajax({
 		type:"POST",
 		data:{id:idRank[0]},
-		url:"<?php echo Yii::app()->request->baseUrl; ?>/index.php/PvPSet/getChart",
+		url:"<?php echo Yii::app()->request->baseUrl; ?>/index.php/jugadorRanking/getChart",
 		success:function(data){
-			$("#chart").html("");
-			$("#chart").html(data);
+			$("#chartJug").html("");
+			$("#chartJug").html(data);
 		}
 	});
 }

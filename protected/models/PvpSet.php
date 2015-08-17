@@ -10,6 +10,11 @@
  * @property integer $id_jugador_ganador
  * @property integer $id_torneo
  * @property string $ronda
+ * @property integer $elo_jugador_1
+ * @property integer $elo_jugador_2
+ * @property integer $numero_ronda
+ * @property integer $nuevo_elo_1
+ * @property integer $nuevo_elo_2
  *
  * The followings are the available model relations:
  * @property Jugador $idJugador1
@@ -39,12 +44,12 @@ class PvpSet extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo, ronda, elo_jugador_1, elo_jugador_2, numero_ronda', 'required'),
-			array('id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo', 'numerical', 'integerOnly'=>true),
+			array('id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo, ronda, elo_jugador_1, elo_jugador_2, numero_ronda,, nuevo_elo_1, nuevo_elo_2', 'required'),
+			array('id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo, elo_jugador_1, elo_jugador_2, numero_ronda, nuevo_elo_1, nuevo_elo_2', 'numerical', 'integerOnly'=>true),
 			array('ronda', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo, ronda, elo_jugador_1, elo_jugador_2, numero_ronda, jugador1Aux, jugador2Aux, jugadorGanadorAux, torneoAux', 'safe', 'on'=>'search'),
+			array('id, id_jugador_1, id_jugador_2, id_jugador_ganador, id_torneo, ronda, elo_jugador_1, elo_jugador_2, numero_ronda, nuevo_elo_1, nuevo_elo_2, jugador1Aux, jugador2Aux, jugadorGanadorAux, torneoAux', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +83,8 @@ class PvpSet extends CActiveRecord
 			'elo_jugador_1' => 'Elo Jugador 1',
 			'elo_jugador_2' => 'Elo Jugador 2',
 			'numero_ronda' => 'Numero Ronda',
+			'nuevo_elo_1' => 'Nuevo Elo 1',
+			'nuevo_elo_2' => 'Nuevo Elo 2',
 			'jugador1Aux' => 'Jugador 1',
 			'jugador2Aux' => 'Jugador 2',
 			'jugadorGanadorAux' => 'Jugador Ganador',
@@ -112,6 +119,8 @@ class PvpSet extends CActiveRecord
 		$criteria->compare('elo_jugador_1',$this->elo_jugador_1);
 		$criteria->compare('elo_jugador_2',$this->elo_jugador_2);
 		$criteria->compare('numero_ronda',$this->numero_ronda);
+		$criteria->compare('nuevo_elo_1',$this->nuevo_elo_1);
+		$criteria->compare('nuevo_elo_2',$this->nuevo_elo_2);
 		$criteria->compare('idJugador1.nick',$this->jugador1Aux,true);
 		$criteria->compare('idJugador2.nick',$this->jugador2Aux,true);
 		$criteria->compare('idJugadorGanador.nick',$this->jugadorGanadorAux,true);
@@ -288,5 +297,73 @@ class PvpSet extends CActiveRecord
 		$ranking2->status=1;
 		$ranking2->posicion=0;
 		$ranking2->save();
+		$model->nuevo_elo_1=$nuevoElo1;
+		$model->nuevo_elo_2=$nuevoElo2;
+		$model->save();
+	}
+
+	public function chartSets($idJugador){
+		$criteria=new CDbCriteria;
+		$criteria->condition='(id_jugador_1=:idJug OR id_jugador_2=:idJug) AND (elo_jugador_1>0 OR elo_jugador_2>0)';
+		$criteria->params=array(':idJug'=>$idJugador);
+		$criteria->with=array('idTorneo');
+		$criteria->order='idTorneo.fecha, numero_ronda';
+		$criteria->limit=12;
+		$countSets=PvpSet::model()->count($criteria);
+		if($countSets>=12){
+			$criteria->offset=2;
+		}
+		$sets=PvpSet::model()->findAll($criteria);
+		return $sets;
+	}
+
+	public function chartVsJugadores($model,$jugId){
+		$vsJugadores=array();
+		foreach($model as $set){
+			if($set->idJugador1->id==$jugId){
+				$diferencia=PvPSet::model()->chartFormat($set,$jugId);
+				$vsJugadores[]=$set->idJugador2->nick."-".$set->idTorneo->nombre."-".$diferencia;
+			}else{
+				$diferencia=PvPSet::model()->chartFormat($set,$jugId);
+				$vsJugadores[]=$set->idJugador1->nick."-".$set->idTorneo->nombre."-".$diferencia;
+			}
+		}
+		return $vsJugadores;
+	}
+
+	public function chartPtsVs($model,$jugId){
+		$ptsVs=array();
+		foreach($model as $set){
+			if($set->idJugador1->id==$jugId){
+				$ptsVs[]=$set->nuevo_elo_1;
+			}else{
+				$ptsVs[]=$set->nuevo_elo_2;
+			}
+		}
+		return array_map('intVal', $ptsVs);
+	}
+
+	public function chartFormat($model,$jugId){
+		if($model->idJugador1->id==$jugId && $model->idJugadorGanador->id==$jugId){
+			$diferencia="Ganó ";
+			$diferencia.=$model->nuevo_elo_1-$model->elo_jugador_1;
+		}else{
+			if($model->idJugador2->id==$jugId && $model->idJugadorGanador->id==$jugId){
+				$diferencia="Ganó ";
+				$diferencia.=$model->nuevo_elo_2-$model->elo_jugador_2;
+			}else{
+				if($model->idJugador1->id==$jugId){
+					$diferencia="Perdió ";
+					$diferencia.=$model->elo_jugador_1-$model->nuevo_elo_1;
+				}else{
+					if($model->idJugador2->id==$jugId){
+						$diferencia="Perdió ";
+						$diferencia.=$model->elo_jugador_2-$model->nuevo_elo_2;
+					}
+				}
+			}
+		}
+		$diferencia.=" pts";
+		return $diferencia;
 	}
 }

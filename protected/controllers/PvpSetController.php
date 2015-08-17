@@ -56,6 +56,8 @@ if(isset($_POST['PvpSet']))
 $model->attributes=$_POST['PvpSet'];
 $model->elo_jugador_1=0;
 $model->elo_jugador_2=0;
+$model->nuevo_elo_1=0;
+$model->nuevo_elo_2=0;
 if($model->save()){
 	$user->setFlash('success', "Datos han sido guardados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('create'));
@@ -170,23 +172,6 @@ if(isset($_POST['ajax']) && $_POST['ajax']==='pvp-set-form')
 echo CActiveForm::validate($model);
 Yii::app()->end();
 }
-}
-
-public function actionGetChart(){
-	$id=$_POST['id'];
-	if($id!=""){
-		$rankJugId=JugadorRanking::model()->findByPk($id);
-		$jugador=Jugador::model()->findByPk($rankJugId->id_jugador);
-		$sets=PvpSet::model()->findAll(array(
-			'condition'=>'(id_jugador_1=:idJug OR id_jugador_2=:idJug) AND (elo_jugador_1>0 OR elo_jugador_2>0)',
-			'params'=>array(':idJug'=>$rankJugId->id_jugador),
-			'order'=>'numero_ronda',
-		));
-		return $this->renderPartial('_chartJug',array(
-			'sets'=>$sets,
-			'jugador'=>$jugador,
-		),false,true);
-	}
 }
 
 public function actionElo($id){

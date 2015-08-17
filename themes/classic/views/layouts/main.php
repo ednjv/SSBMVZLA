@@ -21,9 +21,8 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo $themeUrl.'/img/smash.png'; ?>">
 
-	<!-- CSS
-	================================================== -->
 	<?php $cs->registerCssFile($themeUrl . '/css/main.css'); ?>
+	<?php $cs->registerScriptFile($baseUrl . '/js/ChartJs/Chart.js'); ?>
 	<?php $cs->registerPackage('select2'); ?>
 </head>
 <body>
@@ -47,7 +46,6 @@
 						array(
 							'label'=>'Ranking',
 							'url'=>array('jugadorRanking/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
 						),
 						array(
 							'label'=>'Temp Ranking',
