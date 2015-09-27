@@ -142,6 +142,7 @@ $this->render('index',array(
 public function actionAdmin()
 {
 $lastUpdate=strftime("%d/%m/%Y",strtotime(str_replace("-", "/", JugadorRanking::model()->find('status=1')->fecha)));
+$selectPersonajes=Personaje::model()->selectPersonajes();
 $model=new JugadorRanking('search');
 $model->unsetAttributes();  // clear any default values
 if(isset($_GET['JugadorRanking']))
@@ -150,6 +151,7 @@ $model->attributes=$_GET['JugadorRanking'];
 $this->render('admin',array(
 'model'=>$model,
 'lastUpdate'=>$lastUpdate,
+'selectPersonajes'=>$selectPersonajes,
 ));
 }
 

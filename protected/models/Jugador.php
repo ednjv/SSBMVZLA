@@ -21,7 +21,7 @@ class Jugador extends CActiveRecord
 {
 	public $estadoAux;
 	public $paisAux;
-	public $personajes;
+	public $personajePrimario;
 	public $winrateAux;
 	public $recordAux;
 	/**
@@ -46,7 +46,7 @@ class Jugador extends CActiveRecord
 			array('nick', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, primer_nombre, primer_apellido, nick, id_estado, estadoAux, paisAux, personajes', 'safe', 'on'=>'search'),
+			array('id, primer_nombre, primer_apellido, nick, id_estado, estadoAux, paisAux, personajePrimario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,8 +79,8 @@ class Jugador extends CActiveRecord
 			'id_estado' => 'Id Estado',
 			'estadoAux' => 'Estado',
 			'paisAux' => 'País',
-			'personajes' => 'Personajes',
-			'winrateAux' => 'Win Rate',
+			'personajePrimario' => 'Personaje Primario',
+			'winrateAux' => '% de Victorias',
 			'recordAux' => 'Récord',
 		);
 	}
@@ -130,7 +130,8 @@ class Jugador extends CActiveRecord
 		$criteria->compare('t.id_estado',$this->id_estado);
 		$criteria->compare('idEstado.nombre',$this->estadoAux,true);
 		$criteria->compare('idPais.nombre',$this->paisAux,true);
-		$criteria->compare('idPersonaje.id',$this->personajes);
+		$criteria->compare('idPersonaje.id',$this->personajePrimario);
+		$criteria->addSearchCondition('primario',1,"=","AND");
 		$criteria->group='t.id';
 		$criteria->with=array(
 			'idEstado'=>array(

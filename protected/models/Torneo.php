@@ -14,6 +14,7 @@
  */
 class Torneo extends CActiveRecord
 {
+	public $estadoAux;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,7 +36,7 @@ class Torneo extends CActiveRecord
 			array('nombre', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nombre, id_estado, fecha', 'safe', 'on'=>'search'),
+			array('id, nombre, id_estado, fecha, estadoAux', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,7 +48,10 @@ class Torneo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'jugadorPosicionTorneos' => array(self::HAS_MANY, 'JugadorPosicionTorneo', 'id_torneo'),
+			'pvpSets' => array(self::HAS_MANY, 'PvpSet', 'id_torneo'),
 			'idEstado' => array(self::BELONGS_TO, 'Estado', 'id_estado'),
+			'torneoImagens' => array(self::HAS_MANY, 'TorneoImagen', 'id_torneo'),
 		);
 	}
 
@@ -61,6 +65,7 @@ class Torneo extends CActiveRecord
 			'nombre' => 'Nombre',
 			'id_estado' => 'Id Estado',
 			'fecha' => 'Fecha',
+			'estadoAux' => 'Estado',
 		);
 	}
 
@@ -86,9 +91,22 @@ class Torneo extends CActiveRecord
 		$criteria->compare('nombre',$this->nombre,true);
 		$criteria->compare('id_estado',$this->id_estado);
 		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('idEstado.nombre',$this->estadoAux,true);
+		$criteria->with=array('idEstado');
+
+		$sort=new CSort;
+		$sort->defaultOrder="fecha desc";
+		$sort->attributes=array(
+			'estadoAux'=>array(
+				'asc'=>'idEstado.nombre',
+				'desc'=>'idEstado.nombre desc'
+			),
+			'*'
+		);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>$sort,
 		));
 	}
 

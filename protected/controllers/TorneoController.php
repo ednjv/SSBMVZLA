@@ -20,11 +20,26 @@ public $layout='//layouts/column1';
 public function filters()
 {
 return array(
-'rights', // perform access control for CRUD operations
-'postOnly + delete', // we only allow deletion via POST request
+'accessControl', // perform access control for CRUD operations
 );
 }
 
+public function accessRules()
+{
+return array(
+array('allow',
+	'actions'=>array('update','delete','index','create','view'),
+	'users'=>array('Administrador'),
+),
+array('allow',
+	'actions'=>array('admin'),
+	'users'=>array('*'),
+),
+array('deny',
+	'users'=>array('*'),
+),
+);
+}
 
 /**
 * Displays a particular model.

@@ -1,5 +1,3 @@
-
-
 <?php $this->widget('booster.widgets.TbDetailView',array(
 	'data'=>$jugador,
 	'attributes'=>array(
@@ -20,7 +18,7 @@
 			'value'=>$jugador->getRecord($jugador->id),
 		),
 		array(
-			'name'=>'WinRate',
+			'name'=>'winrateAux',
 			'value'=>$jugador->getWinRate()." %",
 		),
 	),

@@ -4,30 +4,40 @@
 		<?php $this->widget('booster.widgets.TbGridView',array(
 		'id'=>'jugador-ranking-grid',
 		'dataProvider'=>$model->search(),
-		'hideHeader'=>true,
+		'hideHeader'=>false,
 		'summaryText'=>'',
 		'selectionChanged'=>'getChart',
 		'columns'=>array(
 			array(
 				'name'=>'posicion',
 				'htmlOptions'=>array('width'=>'5%','style'=>'cursor:pointer;'),
+				'sortable'=>false,
 			),
 			array(
 				'name'=>'nickAux',
-				'value'=>'$data->idJugador->nick." ".$data->idJugador->getPersonajes($data->idJugador->id,true)',
+				'value'=>'$data->idJugador->nick',
 				'type'=>'raw',
-				'htmlOptions'=>array('width'=>'30%','style'=>'cursor:pointer;'),
+				'htmlOptions'=>array('width'=>'45%','style'=>'cursor:pointer;'),
+				'sortable'=>false,
+			),
+			array(
+				'name'=>'personajeJugador',
+				'value'=>'$data->idJugador->getPersonajes($data->id_jugador,true)',
+				'type'=>'raw',
+				'htmlOptions'=>array('width'=>'10%','style'=>'cursor:pointer;'),
+				'sortable'=>false,
 			),
 			array(
 				'name'=>'puntos',
 				'value'=>'number_format($data->puntos,0,".",",")',
-				'htmlOptions'=>array('width'=>'55%','style'=>'text-align:right; cursor:pointer;'),
+				'htmlOptions'=>array('width'=>'35%','style'=>'cursor:pointer;'),
+				'sortable'=>false,
 			),
 			array(
 				'name'=>'cambio',
 				'value'=>'$data->getCambio($data->id_jugador)',
 				'type'=>'raw',
-				'htmlOptions'=>array('width'=>'10%','style'=>'text-align:right; cursor:pointer;'),
+				'htmlOptions'=>array('width'=>'5%','style'=>'text-align:right; cursor:pointer;'),
 			),
 		array(
 		'template'=>'',

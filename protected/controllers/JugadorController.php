@@ -47,21 +47,31 @@ array('deny',
 */
 public function actionView($id)
 {
-$todosSets=PvpSet::model()->findAll(array(
+$todosSets=PvpSet::model()->historiaTorneos($id);
+$countSets=PvpSet::model()->findAll(array(
 	'condition'=>'id_jugador_1=:id OR id_jugador_2=:id',
 	'params'=>array(':id'=>$id),
 	'with'=>array('idTorneo'),
 	'order'=>'idTorneo.fecha desc, t.id desc',
-));
+));	
 $countTorneos=PvpSet::model()->count(array(
 	'condition'=>'id_jugador_1=:id OR id_jugador_2=:id',
 	'params'=>array(':id'=>$id),
 	'group'=>'id_torneo',
 ));
+$ultimosTorneos=JugadorPosicionTorneo::model()->getPosiciones(
+	"id_jugador=:idJugador",
+	array("idJugador"=>$id),
+	"idTorneo.fecha desc",
+	5,
+	array('idTorneo')
+);
 $this->render('view',array(
 'model'=>$this->loadModel($id),
 'todosSets'=>$todosSets,
+'countSets'=>$countSets,
 'countTorneos'=>$countTorneos,
+'ultimosTorneos'=>$ultimosTorneos,
 ));
 }
 
@@ -196,20 +206,19 @@ Yii::app()->end();
 }
 
 public function actionCompararJugador(){
-	$jugadorActual=$_POST['jugadorActual'];
-	$jugadorComparar=$_POST['jugadorComparar'];
+	$jugadorActual=$_GET['jugadorActual'];
+	$jugadorComparar=$_GET['jugadorComparar'];
 	$modelJugadorVs=Jugador::model()->findByPk($jugadorComparar);
 	$personajePrimario=JugadorPersonaje::model()->find(array(
 		'condition'=>'id_jugador=:jugadorComparar AND primario=1',
 		'params'=>array(':jugadorComparar'=>$jugadorComparar)
 	));
-	$recordVs=Jugador::model()->getRecordVs($jugadorActual,$jugadorComparar);
-	$allSets=PvpSet::model()->findAll(array(
-		'condition'=>'(id_jugador_1=:jugadorActual OR id_jugador_2=:jugadorActual) AND (id_jugador_1=:jugadorComparar OR id_jugador_2=:jugadorComparar)',
-		'params'=>array(':jugadorActual'=>$jugadorActual,':jugadorComparar'=>$jugadorComparar),
-		'order'=>'idTorneo.fecha desc, t.id desc',
-		'with'=>array('idTorneo'),
-	));
+	if($jugadorActual!=$jugadorComparar){
+		$recordVs=Jugador::model()->getRecordVs($jugadorActual,$jugadorComparar);
+	}else{
+		$recordVs="0 W - 0 L";
+	}
+	$allSets=PvpSet::model()->historiaVs($jugadorActual,$jugadorComparar);
 	return $this->renderPartial('_vsJugador',array(
 		'personajePrimario'=>$personajePrimario,
 		'modelJugadorVs'=>$modelJugadorVs,

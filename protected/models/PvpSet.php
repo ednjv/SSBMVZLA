@@ -165,6 +165,36 @@ class PvpSet extends CActiveRecord
 		return parent::model($className);
 	}
 
+	public function historiaTorneos($id){
+		$criteria=new CDbCriteria;
+		$criteria->condition="id_jugador_1=:id OR id_jugador_2=:id";
+		$criteria->params=array(':id'=>$id);
+		$criteria->with=array('idTorneo');
+		$criteria->order='idTorneo.fecha desc, t.id desc';
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>5,
+			),
+		));
+	}
+
+	public function historiaVs($jugadorActual, $jugadorComparar){
+		$criteria=new CDbCriteria;
+		$criteria->condition='(id_jugador_1=:jugadorActual OR id_jugador_2=:jugadorActual) AND (id_jugador_1=:jugadorComparar OR id_jugador_2=:jugadorComparar) AND (:jugadorComparar!=:jugadorActual)';
+		$criteria->params=array(':jugadorActual'=>$jugadorActual,':jugadorComparar'=>$jugadorComparar);
+		$criteria->with=array('idTorneo');
+		$criteria->order='idTorneo.fecha desc, t.id desc';
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>5,
+			),
+		));
+	}
+
 	/**
 	 * Función que calcula la puntuación ELO de un jugador
 	 * Basada en las siguientes fórmula:
@@ -365,5 +395,21 @@ class PvpSet extends CActiveRecord
 		}
 		$diferencia.=" pts";
 		return $diferencia;
+	}
+
+	public function getPvpsJugador($condicion, $params=array(), $order="", $pagSize=5){
+		$criteria=new CDbCriteria;
+		$criteria->condition=$condicion;
+		if(is_array($params)){
+			$criteria->params=$params;
+		}
+		$criteria->order=$order;
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>$pagSize,
+			),
+		));
 	}
 }

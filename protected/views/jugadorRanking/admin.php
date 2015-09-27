@@ -12,6 +12,6 @@
                 ),
             ),
         ),
-    'content' => $this->renderPartial('_admin',array('model'=>$model,'lastUpdate'=>$lastUpdate),true,false),
+    'content' => $this->renderPartial('_admin',array('model'=>$model,'lastUpdate'=>$lastUpdate,'selectPersonajes'=>$selectPersonajes,),true,false),
         ));
 ?>

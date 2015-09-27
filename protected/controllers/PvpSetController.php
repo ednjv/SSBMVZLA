@@ -22,10 +22,26 @@ public $layout='//layouts/column1';
 public function filters()
 {
 return array(
-'rights', // perform access control for CRUD operations
+'accessControl', // perform access control for CRUD operations
 );
 }
 
+public function accessRules()
+{
+return array(
+array('allow',
+	'actions'=>array('update','delete','index','create','view','admin','Elo','ImportRank'),
+	'users'=>array('Administrador'),
+),
+array('allow',
+	'actions'=>array('ObtenerPvpsJugadorTorneo'),
+	'users'=>array('*'),
+),
+array('deny',
+	'users'=>array('*'),
+),
+);
+}
 
 /**
 * Displays a particular model.
@@ -174,6 +190,14 @@ Yii::app()->end();
 }
 }
 
+/**
+* Función para calcular el Elo de los jugadores en un torneo y pasarlos al ranking temporal
+* Esta función cambia el status de los rankings temporales anteriores que tenga el jugador a inactivos (0)
+* Esta funcion se debe realizar antes que el import de lo contrario podrían repetirse rankings
+* @param integer id, id del torneo a calcular el elo
+* @return redirect a la vista admin
+*/
+
 public function actionElo($id){
 	$user=Yii::app()->user;
 	$busq=PvpSet::model()->findAll(array(
@@ -189,6 +213,12 @@ public function actionElo($id){
 	$this->redirect(array('admin'));
 }
 
+
+/**
+* Función para importar los jugadores del ranking temporal al ranking
+* Todos aquellos jugadores que tengan como status de su ranking 1 (activo)
+* Pasaran de forma automatica al ranking principal
+*/
 public function actionImportRank(){
 	$user=Yii::app()->user;
 	$busqRankTemp=JugadorRankTemp::model()->findAll(array(
@@ -205,5 +235,19 @@ public function actionImportRank(){
 	}
 	$user->setFlash('success', "Datos han sido modificados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('admin'));
+}
+
+public function actionObtenerPvpsJugadorTorneo(){
+	$idJugador=$_GET['idJugador'];
+	$idTorneo=$_GET['idTorneo'];
+	$condicion='id_torneo=:idTorneo AND (id_jugador_1=:idJugador OR id_jugador_2=:idJugador)';
+	$parametros=array(":idJugador"=>$idJugador,":idTorneo"=>$idTorneo);
+	$ordenar="numero_ronda";
+	$tamanoPag=12;
+	$pvpsJugadorTorneo=PvpSet::model()->getPvpsJugador($condicion, $parametros, $ordenar, $tamanoPag);
+	return $this->renderPartial('_pvpsJugadorTorneo',array(
+		'pvpsJugadorTorneo'=>$pvpsJugadorTorneo,
+		'jugadorActual'=>$idJugador,
+	),false,false);
 }
 }

@@ -60,11 +60,20 @@
 						array(
 							'label'=>'Torneos',
 							'url'=>array('torneo/admin'),
+						),
+						array(
+							'label'=>'Torn-Img',
+							'url'=>array('torneoImagen/admin'),
 							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
 						),
 						array(
-							'label'=>'Jugador-Personaje',
+							'label'=>'Jug-Pj',
 							'url'=>array('JugadorPersonaje/admin'),
+							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
+						),
+						array(
+							'label'=>'Jug-Pos',
+							'url'=>array('jugadorPosicionTorneo/admin'),
 							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
 						),
 						array(

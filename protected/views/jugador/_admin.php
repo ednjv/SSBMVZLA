@@ -9,19 +9,19 @@
 			'name'=>'estadoAux',
 			'value'=>'$data->idEstado->nombre',
 		),
-		array(
+		/*array(
 			'name'=>'paisAux',
 			'value'=>'chtml::image(Yii::app()->baseUrl."/images/".$data->idEstado->idPais->imagen,"",array("width"=>"40"))." ".$data->idEstado->idPais->nombre',
 			'type'=>'raw'
-		),
+		),*/
 		array(
-			'name'=>'personajes',
-			'value'=>'$data->getPersonajes($data->id)',
+			'name'=>'personajePrimario',
+			'value'=>'$data->getPersonajes($data->id, true)',
 			'type'=>'raw',
 			'filter'=>$this->widget('ext.booster.widgets.TbSelect2',array(
 				'model'=>$model,
 				'data'=>$selectPersonajes,
-				'attribute'=>'personajes',
+				'attribute'=>'personajePrimario',
 				'options'=>array(
 					'placeholder'=>'Personaje',
 					'allowClear'=>true,
@@ -62,7 +62,7 @@ function formatResult(data){
 	var splitted=datos.split("|");
 	var imagen='<img src="'+backSlash+'images/'+splitted[1]+'" width="24"/>';
 	var descripcion=splitted[0];
-	return descripcion+" "+imagen;
+	return imagen+" "+descripcion;
 }
 
 function formatSelection(data){
@@ -73,16 +73,24 @@ function formatSelection(data){
 }
 
 function afterUpdate(){
-	$("#Jugador_personajes").select2({
+	$("#Jugador_personajePrimario").select2({
 		allowClear: true,
 		width: '100%',
 		placeholder: 'Personaje',
 		formatResult: function(data){
+			var backSlash="";
+			if(location.href=="http://ssbmvenezuela.byethost11.com/SSBMVZLA/index.php"){
+				backSlash="";
+			}else{
+				if(location.href!="http://ssbmvenezuela.byethost11.com/SSBMVZLA/"){
+					backSlash="../../";
+				}
+			}
 			var datos=data.text;
 			var splitted=datos.split("|");
-			var imagen='<img src="../../images/'+splitted[1]+'" width="24"/>';
+			var imagen='<img src="'+backSlash+'images/'+splitted[1]+'" width="24"/>';
 			var descripcion=splitted[0];
-			return descripcion+" "+imagen;
+			return imagen+" "+descripcion;
 		},
 		formatSelection: function(data){
 			var datos=data.text;
