@@ -58,7 +58,7 @@ class Estado extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'id_pais' => 'Id Pais',
+			'id_pais' => 'País',
 		);
 	}
 
@@ -100,13 +100,18 @@ class Estado extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function selectEstados(){
+	/**
+	 * Retorna los estados por país
+	 * @return Array estados con su país concatenado en el nombre "Estado, Pais"
+	*/
+	public function selectEstados()
+	{
 		$model=Estado::model()->findAll(array(
 			'with'=>array('idPais'),
 			'select'=>array('CONCAT(t.nombre,", ",idPais.nombre) as nombre','id'),
-			'order'=>'t.nombre',
+			'order'=>'t.nombre'
 		));
-		$lista=CHtml::listdata($model,'id','nombre');
+		$lista=CHtml::listdata($model, 'id', 'nombre');
 		return $lista;
 	}
 }

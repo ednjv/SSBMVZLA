@@ -65,7 +65,7 @@ class JugadorRanking extends CActiveRecord
 			'puntos' => 'Puntos',
 			'posicion' => 'Posición',
 			'status' => 'Status',
-			'nickAux' => 'Nick',
+			'nickAux' => 'Jugador',
 			'cambio' => 'Cambio (Último Torneo)',
 			'personajeJugador' => 'Primario',
 		);

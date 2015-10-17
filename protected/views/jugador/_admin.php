@@ -19,18 +19,7 @@
 			'name'=>'personajePrimario',
 			'value'=>'$data->getPersonajes($data->id, true)',
 			'type'=>'raw',
-			'filter'=>$this->widget('ext.booster.widgets.TbSelect2',array(
-				'model'=>$model,
-				'data'=>$selectPersonajes,
-				'attribute'=>'personajePrimario',
-				'options'=>array(
-					'placeholder'=>'Personaje',
-					'allowClear'=>true,
-					'width'=>'100%',
-					'formatResult'=>'js:formatResult',
-					'formatSelection'=>'js:formatSelection',
-				),
-			),true,false),
+			'filter'=>CHtml::activeDropDownList($model, 'personajePrimario', $selectPersonajes, array('empty'=>''))
 		),
 		array(
 			'name'=>'recordAux',
@@ -58,55 +47,14 @@ array(
 )); ?>
 
 <script>
-function formatResult(data){
-	var backSlash="";
-	if(location.href=="http://ssbmvenezuela.byethost11.com/SSBMVZLA/index.php"){
-		backSlash="";
-	}else{
-		if(location.href!="http://ssbmvenezuela.byethost11.com/SSBMVZLA/"){
-			backSlash="../../";
-		}
-	}
-	var datos=data.text;
-	var splitted=datos.split("|");
-	var imagen='<img src="'+backSlash+'images/'+splitted[1]+'" width="24"/>';
-	var descripcion=splitted[0];
-	return imagen+" "+descripcion;
-}
-
-function formatSelection(data){
-	var datos=data.text;
-	var splitted=datos.split("|");
-	var descripcion=splitted[0];
-	return descripcion;
-}
 
 function afterUpdate(){
-	$("#Jugador_personajePrimario").select2({
-		allowClear: true,
-		width: '100%',
-		placeholder: 'Personaje',
-		formatResult: function(data){
-			var backSlash="";
-			if(location.href=="http://ssbmvenezuela.byethost11.com/SSBMVZLA/index.php"){
-				backSlash="";
-			}else{
-				if(location.href!="http://ssbmvenezuela.byethost11.com/SSBMVZLA/"){
-					backSlash="../../";
-				}
-			}
-			var datos=data.text;
-			var splitted=datos.split("|");
-			var imagen='<img src="'+backSlash+'images/'+splitted[1]+'" width="24"/>';
-			var descripcion=splitted[0];
-			return imagen+" "+descripcion;
-		},
-		formatSelection: function(data){
-			var datos=data.text;
-			var splitted=datos.split("|");
-			var descripcion=splitted[0];
-			return descripcion;
-		},
-	});
+	instalarSelect2('Jugador_personajePrimario', 'Personaje', true);
 }
+
+$(document).ready(function()
+{
+	instalarSelect2('Jugador_personajePrimario', 'Personaje', true);
+});
+
 </script>

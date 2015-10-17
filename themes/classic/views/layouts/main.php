@@ -28,6 +28,7 @@
 	<!-- JS -->
 	<?php $cs->registerScriptFile($baseUrl . '/js/ChartJs/Chart.js'); ?>
 	<?php $cs->registerScriptFile($baseUrl . '/js/fancybox/source/jquery.fancybox.js'); ?>
+	<?php $cs->registerScriptFile($baseUrl . '/js/utilidades.js'); ?>
 	<?php $cs->registerPackage('select2'); ?>
 </head>
 <body>
@@ -88,8 +89,9 @@
 						),
 						array(
 							'label'=>'Estados',
-							'url'=>array('estado/admin'),
+							'url'=>array('/estado'),
 							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
+							'active'=>Yii::app()->controller->id=='estado'
 						),
 						array(
 							'label'=>'Países',
