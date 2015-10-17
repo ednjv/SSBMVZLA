@@ -1,4 +1,4 @@
-<ul style="width:70%; padding-left:0px; box-shadow:2px 3px 5px #888888;">
+<ul style="width:100%; padding-left:0px; box-shadow:2px 3px 5px #888888;">
 	<li style='padding:10px 15px; display:block;'>
 		<span style='float:right; background-color:#aab2bd; border-radius:10px; color:#fff; display:inline-block; font-size:12px; font-weight:700; line-height: 1; min-width:10px; padding:3px 7px; text-align:center; vertical-align:baseline; white-space:nowrap;'>
 			<?php echo $data->ronda; ?>

@@ -1,4 +1,4 @@
-<div class="row-fluid" style="width:60%; padding:10px 15px; box-shadow:2px 3px 5px #888888; font-size:14px;">
+<div class="row-fluid" style="width:100%; padding:10px 15px; box-shadow:2px 3px 5px #888888; font-size:14px;">
 	<?php
 		switch ($data->posicion) {
 			case 1:
@@ -11,7 +11,7 @@
 				break;
 		}
 	?>
-	<?php echo $data->posicion.": "; ?>
+	<?php echo "<b>".$data->posicion.")</b>"; ?>
 	<?php
 		if($view==""){
 			echo CHtml::link($data->idJugador->nick,'#',array(
@@ -21,11 +21,10 @@
 			'idTorneo'=>$data->id_torneo));
 			echo $icono;
 		}else{
-			echo $data->idJugador->nick;
 			echo $icono;
 			echo " - ";
 			echo CHtml::link(
-				$data->idTorneo->nombre,
+				$data->idTorneo->nombre." (".strftime("%Y",strtotime($data->idTorneo->fecha)).")",
 				'#',
 				array(
 					'style'=>'font-weight:bold;',

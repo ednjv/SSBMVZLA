@@ -105,23 +105,23 @@ class Jugador extends CActiveRecord
 		$criteria->select=array(
 			'*',
 			'(
-				select count(*) as wins
+				select count(*) as victorias
 				from jugador jug1
 				join pvp_set p1 on jug1.id=p1.id_jugador_ganador
 				where t.id = p1.id_jugador_ganador
-			) as wins',
+			) as victorias',
 			'(
-				select count(*) as loses1
+				select count(*) as derrotas1
 				from jugador jug2
 				join pvp_set p2 on jug2.id=p2.id_jugador_1
 				where t.id = p2.id_jugador_1 AND t.id != p2.id_jugador_ganador
-			) as loses1',
+			) as derrotas1',
 			'(
-				select count(*) as loses2
+				select count(*) as derrotas2
 				from jugador jug3
 				join pvp_set p3 on jug3.id=p3.id_jugador_2
 				where t.id = p3.id_jugador_2 AND t.id != p3.id_jugador_ganador
-			) as loses2',
+			) as derrotas2',
 		);
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('t.primer_nombre',$this->primer_nombre,true);
@@ -159,12 +159,16 @@ class Jugador extends CActiveRecord
 				'desc'=>'idPais.nombre desc'
 			),
 			'recordAux'=>array(
-				'asc'=>'wins',
-				'desc'=>'wins desc'
+				'asc'=>'victorias',
+				'desc'=>'victorias desc'
 			),
 			'winrateAux'=>array(
-				'asc'=>'wins/(wins+loses1+loses2)',
-				'desc'=>'wins/(wins+loses1+loses2) desc'
+				'asc'=>'victorias/(victorias+derrotas1+derrotas2)',
+				'desc'=>'victorias/(victorias+derrotas1+derrotas2) desc'
+			),
+			'efectividad'=>array(
+				'asc'=>'(victorias/(victorias+derrotas1+derrotas2)) + (victorias-derrotas1-derrotas2)',
+				'desc'=>'(victorias/(victorias+derrotas1+derrotas2)) + (victorias-derrotas1-derrotas2) desc'
 			),
 			'*'
 		);
@@ -196,16 +200,41 @@ class Jugador extends CActiveRecord
 		return $lista;
 	}
 
-	public function getRecord($idJugador){
-		$wins=PvpSet::model()->count(array(
-			'condition'=>'(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador=:idJugador',
-			'params'=>array(':idJugador'=>$idJugador),
-		));
-		$loses=PvpSet::model()->count(array(
-			'condition'=>'(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador!=:idJugador',
-			'params'=>array(':idJugador'=>$idJugador),
-		));
-		return $wins." W - ".$loses. " L";
+	public function getVictorias($idJugador, $ano=""){
+		$criteria=new CDbCriteria;
+		$criteria->condition='(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador=:idJugador';
+		$criteria->params[':idJugador']=$idJugador;
+		if($ano!=""){
+			$criteria->with=array('idTorneo');
+			$criteria->addCondition('YEAR(idTorneo.fecha)=:ano');
+			$criteria->params[':ano']=$ano;
+		}
+		$victorias=PvpSet::model()->count($criteria);
+		return $victorias;
+	}
+
+	public function getDerrotas($idJugador, $ano=""){
+		$criteria=new CDbCriteria;
+		$criteria->condition='(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador!=:idJugador';
+		$criteria->params[':idJugador']=$idJugador;
+		if($ano!=""){
+			$criteria->with=array('idTorneo');
+			$criteria->addCondition('YEAR(idTorneo.fecha)=:ano');
+			$criteria->params[':ano']=$ano;
+		}
+		$perdidas=PvpSet::model()->count($criteria);
+		return $perdidas;
+	}
+
+	public function getEfectividad($idJugador){
+		$victorias=Jugador::getVictorias($idJugador);
+		$perdidas=Jugador::getDerrotas($idJugador);
+		if($victorias+$perdidas>0){
+			$efectividad=($victorias/($victorias+$perdidas)) + ($victorias-$perdidas);
+		}else{
+			$efectividad=0;
+		}
+		return number_format($efectividad,2,".",","	);
 	}
 
 	public function getPersonajes($idJugador,$primary=false){
@@ -228,7 +257,7 @@ class Jugador extends CActiveRecord
 	}
 
 	public function getRecordVs($idJugadorActual,$idJugadorComparar){
-		$wins=PvpSet::model()->count(array(
+		$victorias=PvpSet::model()->count(array(
 			'condition'=>'(id_jugador_1=:idJugadorActual OR id_jugador_2=:idJugadorActual) AND (id_jugador_1=:idJugadorComparar OR id_jugador_2=:idJugadorComparar) AND id_jugador_ganador=:idJugadorActual',
 			'params'=>array(':idJugadorActual'=>$idJugadorActual,':idJugadorComparar'=>$idJugadorComparar),
 		));
@@ -236,23 +265,42 @@ class Jugador extends CActiveRecord
 			'condition'=>'(id_jugador_1=:idJugadorActual OR id_jugador_2=:idJugadorActual) AND (id_jugador_1=:idJugadorComparar OR id_jugador_2=:idJugadorComparar) AND id_jugador_ganador!=:idJugadorActual',
 			'params'=>array(':idJugadorActual'=>$idJugadorActual,':idJugadorComparar'=>$idJugadorComparar),
 		));
-		return $wins." W - ".$loses. " L";
+		return $victorias." W - ".$loses. " L";
 	}
 
-	public function getWinRate(){
-		$wins=PvpSet::model()->count(array(
-			'condition'=>'(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador=:idJugador',
-			'params'=>array(':idJugador'=>$this->id),
-		));
-		$loses=PvpSet::model()->count(array(
-			'condition'=>'(id_jugador_1=:idJugador OR id_jugador_2=:idJugador) AND id_jugador_ganador!=:idJugador',
-			'params'=>array(':idJugador'=>$this->id),
-		));
+	public function getWinRate($idJugador, $ano=""){
+		$victorias=Jugador::getVictorias($idJugador, $ano);
+		$loses=Jugador::getDerrotas($idJugador, $ano);
 		$WinRate=0;
-		$total=$wins+$loses;
+		$total=$victorias+$loses;
 		if($total>0){
-			$WinRate=$wins*100/$total;
+			$WinRate=$victorias*100/$total;
 		}
 		return number_format($WinRate,1);
+	}
+
+	public function getTitulos($idJugador, $ano=""){
+		$criteria=new CDbCriteria;
+		$criteria->condition='id_jugador=:idJugador AND posicion=1';
+		$criteria->params[':idJugador']=$idJugador;
+		if($ano!=""){
+			$criteria->with=array('idTorneo');
+			$criteria->addCondition('YEAR(idTorneo.fecha)=:ano');
+			$criteria->params[':ano']=$ano;
+		}
+		$titulos=JugadorPosicionTorneo::model()->count($criteria);
+		return $titulos;
+	}
+
+	public function getRanking($idJugador){
+		$rankingActual=JugadorRanking::model()->find(array(
+			'condition'=>'id_jugador=:idJugador AND status=1',
+			'params'=>array(':idJugador'=>$idJugador)
+		));
+		if($rankingActual!=null){
+			return $rankingActual->posicion;
+		}else{
+			return 'N/A';
+		}
 	}
 }

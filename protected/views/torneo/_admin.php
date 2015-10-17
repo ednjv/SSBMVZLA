@@ -1,6 +1,7 @@
 <div class="col-md-6 col-xs-12">
 	<?php $this->widget('booster.widgets.TbGridView',array(
 	'id'=>'torneo-grid',
+	'type'=>'striped',
 	'dataProvider'=>$model->search(),
 	'selectionChanged'=>'getPosiciones',
 	'filter'=>$model,
@@ -18,6 +19,9 @@
 			'name'=>'fecha',
 			'value'=>'strftime("%d/%m/%Y",strtotime($data->fecha))'
 		),
+	),
+	'htmlOptions'=>array(
+		'style'=>'overflow:auto;'
 	),
 	)); ?>
 </div>
@@ -44,12 +48,14 @@
 
 <script>
 	function getPosiciones(id){
+		$.fancybox.showLoading();
 		var idTorneo=$.fn.yiiGridView.getSelection(id);
 		$.ajax({
 			type:'GET',
 			url: "<?php echo Yii::app()->baseUrl.'/index.php/jugadorPosicionTorneo/ObtenerPosicionesTorneo'; ?>",
 			data:{idTorneo:idTorneo[0],ajax:'listViewPosiciones'},
 			success: function(datos){
+				$.fancybox.hideLoading();
 				$("#resultadoBusqueda").html(datos);
 				cargarClick();
 			}
@@ -58,6 +64,7 @@
 
 	function cargarClick(){
 		$(".detalleJugadorPvp").click(function(){
+			$.fancybox.showLoading();
 			var idJugador=$(this).attr('idJugador');
 			var idTorneo=$(this).attr('idTorneo');
 			$.ajax({
@@ -65,6 +72,7 @@
 				url: "<?php echo Yii::app()->baseUrl.'/index.php/pvpSet/ObtenerPvpsJugadorTorneo'; ?>",
 				data:{idJugador:idJugador,idTorneo:idTorneo,ajax:'listViewPvps'},
 				success: function(datos){
+					$.fancybox.hideLoading();
 					$("#resultadoPvpJugadorTorneo").html(datos);
 				}
 			});
@@ -72,12 +80,14 @@
 	}
 
 	$(".verImagenTorneo").click(function(){
+		$.fancybox.showLoading();
 	    var idTorneo=$(this).attr('idTorneo');
 	    $.ajax({
 	        type:'GET',
 	        url: "<?php echo Yii::app()->baseUrl.'/index.php/torneoImagen/VerImagenes'; ?>",
 	        data:{idTorneo:idTorneo},
 	        success: function(datos){
+	        	$.fancybox.hideLoading();
 	            $("#galeriaImagenes").html(datos);
 	            $("#modalGaleria").modal('show')
 	        }

@@ -21,8 +21,13 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo $themeUrl.'/img/smash.png'; ?>">
 
+	<!-- CSS -->
 	<?php $cs->registerCssFile($themeUrl . '/css/main.css'); ?>
+	<?php $cs->registerCssFile($baseUrl . '/js/fancybox/source/jquery.fancybox.css'); ?>
+
+	<!-- JS -->
 	<?php $cs->registerScriptFile($baseUrl . '/js/ChartJs/Chart.js'); ?>
+	<?php $cs->registerScriptFile($baseUrl . '/js/fancybox/source/jquery.fancybox.js'); ?>
 	<?php $cs->registerPackage('select2'); ?>
 </head>
 <body>

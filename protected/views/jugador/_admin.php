@@ -1,5 +1,6 @@
 <?php $this->widget('booster.widgets.TbGridView',array(
 'id'=>'jugador-grid',
+'type'=>'striped',
 'dataProvider'=>$model->search(),
 'filter'=>$model,
 'afterAjaxUpdate'=>'afterUpdate',
@@ -33,18 +34,26 @@
 		),
 		array(
 			'name'=>'recordAux',
-			'value'=>'$data->getRecord($data->id)',
+			'value'=>'$data->getVictorias($data->id)."-".$data->getDerrotas($data->id)." (G-P)"',
 			'filter'=>'',
 		),
 		array(
 			'name'=>'winrateAux',
-			'value'=>'$data->getWinRate()." %"',
+			'value'=>'$data->getWinRate($data->id)." %"',
+			'filter'=>'',
+		),
+		array(
+			'name'=>'efectividad',
+			'value'=>'$data->getEfectividad($data->id)',
 			'filter'=>'',
 		),
 array(
 'template'=>'{view}',
 'class'=>'booster.widgets.TbButtonColumn',
 ),
+),
+'htmlOptions'=>array(
+	'style'=>'overflow:auto;'
 ),
 )); ?>
 

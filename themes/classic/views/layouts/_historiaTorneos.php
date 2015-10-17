@@ -1,4 +1,4 @@
-<ul style="width:70%; padding-left:0px; box-shadow:2px 3px 5px #888888;">
+<ul style="width:100%; padding-left:0px; box-shadow:2px 3px 5px #888888;">
 	<li style='padding:10px 15px; display:block;'>
 		<span style='float:left; font-weight:bold;'>
 			<?php

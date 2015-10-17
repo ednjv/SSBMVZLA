@@ -137,3 +137,18 @@ body > .container-fluid {
 .button-column {
     min-width: 90px !important;
 }
+
+.tablaDetallesJugador {
+    margin-bottom:20px !important;
+}
+
+.tablaDetallesJugador td {
+    text-align:center;
+    font-weight: bold;
+}
+
+.tablaDetallesJugador th {
+    text-align:center;
+    color:#8899a6;
+    font-weight: bold;
+}

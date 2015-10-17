@@ -3,6 +3,7 @@
 	<div class='col-md-5'>
 		<?php $this->widget('booster.widgets.TbGridView',array(
 		'id'=>'jugador-ranking-grid',
+		'type'=>'striped',
 		'dataProvider'=>$model->search(),
 		'hideHeader'=>false,
 		'summaryText'=>'',
@@ -44,6 +45,9 @@
 		'class'=>'booster.widgets.TbButtonColumn',
 		),
 		),
+		'htmlOptions'=>array(
+			'style'=>'overflow:auto;'
+		),
 		)); ?>
 	</div>
 	<div class='col-md-7'>
@@ -54,12 +58,14 @@
 <script>
 
 function getChart(id){
+	$.fancybox.showLoading();
 	var idRank=$.fn.yiiGridView.getSelection(id);
 	$.ajax({
 		type:"POST",
 		data:{id:idRank[0]},
 		url:"<?php echo Yii::app()->request->baseUrl; ?>/index.php/jugadorRanking/getChart",
 		success:function(data){
+			$.fancybox.hideLoading();
 			$("#chartJug").html("");
 			$("#chartJug").html(data);
 		}
