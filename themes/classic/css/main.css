@@ -152,3 +152,7 @@ body > .container-fluid {
     color:#8899a6;
     font-weight: bold;
 }
+
+.listaJugador{
+    width: 50%;
+}

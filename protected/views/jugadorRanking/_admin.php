@@ -3,7 +3,7 @@
 	<div class='col-md-5'>
 		<?php $this->widget('booster.widgets.TbGridView',array(
 		'id'=>'jugador-ranking-grid',
-		'type'=>'striped',
+		'type'=>'hover',
 		'dataProvider'=>$model->search(),
 		'hideHeader'=>false,
 		'summaryText'=>'',

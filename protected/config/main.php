@@ -50,6 +50,10 @@ return array(
 
 	// application components
 	'components'=>array(
+		'curl' => array(
+			'class' => 'ext.curl-master.Curl',
+			'options' => array(/* additional curl options */),
+		),
 
 		'user'=>array(
 			// enable cookie-based authentication

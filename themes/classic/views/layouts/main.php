@@ -54,49 +54,51 @@
 							'url'=>array('jugadorRanking/admin'),
 						),
 						array(
-							'label'=>'Temp Ranking',
-							'url'=>array('jugadorRankTemp/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
-							'label'=>'PVP Sets',
-							'url'=>array('pvpSet/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
 							'label'=>'Torneos',
 							'url'=>array('torneo/admin'),
 						),
 						array(
-							'label'=>'Torn-Img',
-							'url'=>array('torneoImagen/admin'),
+							'label'=>'Admin',
 							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
-							'label'=>'Jug-Pj',
-							'url'=>array('JugadorPersonaje/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
-							'label'=>'Jug-Pos',
-							'url'=>array('jugadorPosicionTorneo/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
-							'label'=>'Personajes',
-							'url'=>array('personaje/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-						),
-						array(
-							'label'=>'Estados',
-							'url'=>array('/estado'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
-							'active'=>Yii::app()->controller->id=='estado'
-						),
-						array(
-							'label'=>'Países',
-							'url'=>array('pais/admin'),
-							'visible'=>Yii::app()->getUser()->checkAccess('Admin'),
+							'items'=>array(
+								array(
+									'label'=>'Temp Ranking',
+									'url'=>array('jugadorRankTemp/admin'),
+								),
+								array(
+									'label'=>'PVP Sets',
+									'url'=>array('pvpSet/admin'),
+								),
+								array(
+									'label'=>'Torn-Img',
+									'url'=>array('torneoImagen/admin'),
+								),
+								array(
+									'label'=>'Jug-Pj',
+									'url'=>array('JugadorPersonaje/admin'),
+								),
+								array(
+									'label'=>'Jug-Pos',
+									'url'=>array('jugadorPosicionTorneo/admin'),
+								),
+								array(
+									'label'=>'Personajes',
+									'url'=>array('personaje/admin'),
+								),
+								array(
+									'label'=>'Estados',
+									'url'=>array('/estado'),
+									'active'=>Yii::app()->controller->id=='estado'
+								),
+								array(
+									'label'=>'Países',
+									'url'=>array('pais/admin'),
+								),
+								array(
+									'label'=>'Api',
+									'url'=>array('ApiChallonge/index'),
+								)
+							)
 						),
 					)
 				),

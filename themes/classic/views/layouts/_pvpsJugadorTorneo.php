@@ -12,7 +12,7 @@
 		if($data->id_jugador_1==$data->id_jugador_ganador){
 			$resultado=" <b>></b> ";
 		}else{
-			$resultado=" <b>></b> ";
+			$resultado=" <b><</b> ";
 		}
 	}else{
 		$jugador1=$data->idJugador2->nick;
