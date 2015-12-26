@@ -4,7 +4,8 @@
  */
 class ApiChallonge{
 	const URL = "http://api.challonge.com/v1/";
-	const KEY = "YourApiKeyHere";
+	const KEY = "LCbFiUtelgKssWnbEjBIkIQ7HRICbP0diJy505hp"; //ednjv
+	//const KEY = "WEwpKYFmIoPaZK8KcFdxMYgLsLlV5Dt2e1k5oviI"; //torneosRc
 
 	/**
 	 * Obtiene todos los participantes de un torneo

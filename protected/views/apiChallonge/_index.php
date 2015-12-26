@@ -3,17 +3,17 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-<?php echo Chtml::label('ID Torneo Challonge', 'Api_idTorneo'); ?>
+<?php echo CHtml::label('ID Torneo Challonge', 'Api_idTorneo'); ?>
 <br/>
-<?php echo Chtml::textField('Api[idTorneo]', ''); ?>
+<?php echo CHtml::textField('Api[idTorneo]', ''); ?>
 <br/><br/><br/><br/>
 <div class="row-fluid">
 	<div class="col-md-6">
 		<?php echo $listaJugadores; ?>
-	</div>
-	<div class="col-md-6">
 		<?php echo $listaPartidos; ?>
 		<?php echo "Total Partidas: " . $lengthResultados; ?>
+	</div>
+	<div class="col-md-6">
 	</div>
 </div>
 <div class="row-fluid">
@@ -27,15 +27,3 @@
 </div>
 
 <?php $this->endWidget(); ?>
-
-<script>
-
-$(document).ready(function()
-{
-	instalarSelect2('Api_idTorneoVzla', 'Torneo', false);
-	$('.listaJugador').each(function(i, obj){
-		instalarSelect2($(this).attr('id'), 'Jugador', false);
-	});
-});
-
-</script>

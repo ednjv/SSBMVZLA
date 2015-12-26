@@ -11,7 +11,7 @@
 		'id'=>'listViewPosiciones',
 		'dataProvider'=>$posicionTorneo,
 		'itemView'=>'//layouts/_posicionesTorneo',
-		'afterAjaxUpdate'=>'cargarClick',
+		'afterAjaxUpdate'=>'CargarClickDetalleJugador',
 		'viewData'=>array(
 			'view'=>""
 		),

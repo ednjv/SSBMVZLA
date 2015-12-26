@@ -3,9 +3,9 @@
 		<span style='float:left; font-weight:bold;'>
 			<?php
 				if($data->id_jugador_1==$model->id) {
-					echo "vs. ".$data->idJugador2->nick;
+					echo CHtml::link("vs. ".$data->idJugador2->nick, array('jugador/'.$data->idJugador2->id));
 				}else{
-					echo "vs. ".$data->idJugador1->nick;
+					echo CHtml::link("vs. ".$data->idJugador1->nick, array('jugador/'.$data->idJugador1->id));
 				}
 			?>
 		</span>

@@ -3,7 +3,9 @@
 	'id'=>'torneo-grid',
 	'type'=>'striped',
 	'dataProvider'=>$model->search(),
-	'selectionChanged'=>'getPosiciones',
+	'selectionChanged'=>'GetPosiciones',
+	'afterAjaxUpdate'=>'CargarClickDetalleTorneo',
+	'selectableRows'=>1,
 	'filter'=>$model,
 	'columns'=>array(
 		array(
@@ -47,22 +49,26 @@
 </div><!-- /.modal -->
 
 <script>
-	function getPosiciones(id){
-		$.fancybox.showLoading();
+
+	function GetPosiciones(id){
 		var idTorneo=$.fn.yiiGridView.getSelection(id);
-		$.ajax({
-			type:'GET',
-			url: "<?php echo Yii::app()->baseUrl.'/index.php/jugadorPosicionTorneo/ObtenerPosicionesTorneo'; ?>",
-			data:{idTorneo:idTorneo[0],ajax:'listViewPosiciones'},
-			success: function(datos){
-				$.fancybox.hideLoading();
-				$("#resultadoBusqueda").html(datos);
-				cargarClick();
-			}
-		});
+		console.log(idTorneo);
+		if (idTorneo[0] != null) {
+			$.fancybox.showLoading();
+			$.ajax({
+				type:'GET',
+				url: "<?php echo Yii::app()->baseUrl.'/index.php/jugadorPosicionTorneo/ObtenerPosicionesTorneo'; ?>",
+				data:{idTorneo:idTorneo[0],ajax:'listViewPosiciones'},
+				success: function(datos){
+					$.fancybox.hideLoading();
+					$("#resultadoBusqueda").html(datos);
+					CargarClickDetalleJugador();
+				}
+			});
+		}
 	}
 
-	function cargarClick(){
+	function CargarClickDetalleJugador(){
 		$(".detalleJugadorPvp").click(function(){
 			$.fancybox.showLoading();
 			var idJugador=$(this).attr('idJugador');
@@ -79,18 +85,25 @@
 		});
 	}
 
-	$(".verImagenTorneo").click(function(){
-		$.fancybox.showLoading();
-	    var idTorneo=$(this).attr('idTorneo');
-	    $.ajax({
-	        type:'GET',
-	        url: "<?php echo Yii::app()->baseUrl.'/index.php/torneoImagen/VerImagenes'; ?>",
-	        data:{idTorneo:idTorneo},
-	        success: function(datos){
-	        	$.fancybox.hideLoading();
-	            $("#galeriaImagenes").html(datos);
-	            $("#modalGaleria").modal('show')
-	        }
-	    });
+	function CargarClickDetalleTorneo(){
+		$(".verImagenTorneo").click(function(){
+			$.fancybox.showLoading();
+			var idTorneo=$(this).attr('idTorneo');
+			$.ajax({
+				type:'GET',
+				url: "<?php echo Yii::app()->baseUrl.'/index.php/torneoImagen/VerImagenes'; ?>",
+				data:{idTorneo:idTorneo},
+				success: function(datos){
+					$.fancybox.hideLoading();
+					$("#galeriaImagenes").html(datos);
+					$("#modalGaleria").modal('show')
+				}
+			});
+		});
+	}
+
+	$(document).ready(function(){
+		new CargarClickDetalleTorneo();
 	});
+
 </script>
