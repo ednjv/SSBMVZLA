@@ -216,7 +216,7 @@ public function actionCompararJugador(){
 	if($jugadorActual!=$jugadorComparar){
 		$recordVs=Jugador::model()->getRecordVs($jugadorActual,$jugadorComparar);
 	}else{
-		$recordVs="0 W - 0 L";
+		$recordVs="0 G - 0 P";
 	}
 	$allSets=PvpSet::model()->historiaVs($jugadorActual,$jugadorComparar);
 	return $this->renderPartial('_vsJugador',array(

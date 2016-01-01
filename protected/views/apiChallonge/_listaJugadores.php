@@ -46,7 +46,7 @@
 	</div>
 	<div class="col-md-7">
 		<div class="form-group">
-			<?php echo CHtml::dropDownList('ListaJugadorLocal['.$i.']', $jugadorLocal, $selectJugadores, array('class'=>'listaJugador')); ?>
+			<?php echo CHtml::dropDownList('ListaJugadorLocal[jugadorId]['.$i.']', $jugadorLocal, $selectJugadores, array('class'=>'listaJugador')); ?>
 		</div>
 	</div>
 </div>

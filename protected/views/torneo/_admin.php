@@ -52,8 +52,7 @@
 
 	function GetPosiciones(id){
 		var idTorneo=$.fn.yiiGridView.getSelection(id);
-		console.log(idTorneo);
-		if (idTorneo[0] != null) {
+		if(idTorneo[0] != null){
 			$.fancybox.showLoading();
 			$.ajax({
 				type:'GET',

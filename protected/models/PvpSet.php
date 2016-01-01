@@ -289,15 +289,15 @@ class PvpSet extends CActiveRecord
 			$res1=1;
 			$res2=0;
 		}
-		if($count1>3 && $puntosJug1<2400){
-			$K1=20;
+		if($count1<30){
+			$K1=25;
 		}else{
-			if($count1<=3){
-				$K1=40;
-			}else{
-				if($count1>3 && $puntosJug1>=2400){
-					$K1=10;
-				}
+			if($puntosJug1<2300){
+				$K1=25;
+			}elseif($puntosJug1>=2300 && $puntosJug1<2400){
+				$K1=15;
+			}elseif($puntosJug1>=2400){
+				$K1=10;
 			}
 		}
 		$nuevoElo1=PvpSet::model()->calcularElo($puntosJug1,$puntosJug2,$res1,$K1);
@@ -308,15 +308,15 @@ class PvpSet extends CActiveRecord
 		$ranking1->status=1;
 		$ranking1->posicion=0;
 		$ranking1->save();
-		if($count2>3 && $puntosJug2<2400){
-			$K2=20;
+		if($count2<30){
+			$K2=25;
 		}else{
-			if($count2<=3){
-				$K2=40;
-			}else{
-				if($count2>3 && $puntosJug2>=2400){
-					$K2=10;
-				}
+			if($puntosJug2<2300){
+				$K2=25;
+			}elseif($puntosJug2>=2300 && $puntosJug2<2400){
+				$K2=15;
+			}elseif($puntosJug2>=2400){
+				$K2=10;
 			}
 		}
 		$nuevoElo2=PvpSet::model()->calcularElo($puntosJug2,$puntosJug1,$res2,$K2);
@@ -340,8 +340,9 @@ class PvpSet extends CActiveRecord
 		$criteria->order='idTorneo.fecha, numero_ronda';
 		$criteria->limit=12;
 		$countSets=PvpSet::model()->count($criteria);
+		$offset=$countSets-12;
 		if($countSets>=12){
-			$criteria->offset=2;
+			$criteria->offset=$offset;
 		}
 		$sets=PvpSet::model()->findAll($criteria);
 		return $sets;

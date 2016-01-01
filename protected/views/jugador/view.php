@@ -2,6 +2,7 @@
 
 $menu=array(
 array('label'=>'Administrar', 'buttonType'=>'link', 'icon'=>'th-list', 'url'=>array('admin')),
+array('label'=>'Modificar', 'icon'=>'pencil','url'=>array('update','id'=>$model->id))
 );
 ?>
 

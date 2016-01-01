@@ -193,7 +193,7 @@ class Jugador extends CActiveRecord
 	public function selectJugadores(){
 		$model=Jugador::model()->findAll(array(
 			'with'=>array('idEstado'=>array('with'=>array('idPais'))),
-			'select'=>array('CONCAT(primer_nombre," ",primer_apellido," (",nick,", ", idEstado.nombre, ", ", idPais.nombre,")") as primer_nombre','id'),
+			'select'=>array('CONCAT(nick, " (", primer_nombre, " ", primer_apellido, " - ", idEstado.nombre, ", ", idPais.nombre, ")") as primer_nombre','id'),
 			'order'=>'primer_nombre',
 		));
 		$lista=CHtml::listdata($model,'id','primer_nombre');
@@ -265,7 +265,7 @@ class Jugador extends CActiveRecord
 			'condition'=>'(id_jugador_1=:idJugadorActual OR id_jugador_2=:idJugadorActual) AND (id_jugador_1=:idJugadorComparar OR id_jugador_2=:idJugadorComparar) AND id_jugador_ganador!=:idJugadorActual',
 			'params'=>array(':idJugadorActual'=>$idJugadorActual,':idJugadorComparar'=>$idJugadorComparar),
 		));
-		return $victorias." W - ".$loses. " L";
+		return $victorias." G - ".$loses. " P";
 	}
 
 	public function getWinRate($idJugador, $ano=""){

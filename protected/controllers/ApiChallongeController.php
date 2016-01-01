@@ -26,7 +26,6 @@ class ApiChallongeController extends Controller
 
 	public function actionIndex()
 	{
-		
 		$peticion = null;
 		$listaJugadores = '';
 		$listaPartidos = '';
@@ -72,7 +71,7 @@ class ApiChallongeController extends Controller
 		$lengthJugadores = count($postJugadorApi);
 		for($i=0; $i < $lengthJugadores; $i++){
 			$jugadorApi = $postJugadorApi[$i];
-			$jugadorLocal = $postJugadorLocal[$i];
+			$jugadorLocal = $postJugadorLocal['jugadorId'][$i];
 			$idTorneoLocal = $postJugadorLocal['idTorneoVzla'];
 			$posicionJugadorLocal = $postJugadorLocal['posicionJugador'][$i];
 			$peticionPartidos = str_replace($jugadorApi, $jugadorLocal, $peticionPartidos);

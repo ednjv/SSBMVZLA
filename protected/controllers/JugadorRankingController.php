@@ -14,6 +14,8 @@ public $defaultAction = 'admin';
 */
 public $layout='//layouts/column1';
 
+public $pageTitle='SSBM Venezuela - Ranking';
+
 /**
 * @return array action filters
 */

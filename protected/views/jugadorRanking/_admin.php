@@ -58,18 +58,20 @@
 <script>
 
 function getChart(id){
-	$.fancybox.showLoading();
 	var idRank=$.fn.yiiGridView.getSelection(id);
-	$.ajax({
-		type:"POST",
-		data:{id:idRank[0]},
-		url:"<?php echo Yii::app()->request->baseUrl; ?>/index.php/jugadorRanking/getChart",
-		success:function(data){
-			$.fancybox.hideLoading();
-			$("#chartJug").html("");
-			$("#chartJug").html(data);
-		}
-	});
+	if(idRank[0] != null){
+		$.fancybox.showLoading();
+		$.ajax({
+			type:"POST",
+			data:{id:idRank[0]},
+			url:"<?php echo Yii::app()->request->baseUrl; ?>/index.php/jugadorRanking/getChart",
+			success:function(data){
+				$.fancybox.hideLoading();
+				$("#chartJug").html("");
+				$("#chartJug").html(data);
+			}
+		});
+	}
 }
 
 </script>
