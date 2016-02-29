@@ -20,3 +20,4 @@
   - Clone this repository
   - Create an assets folder inside this project
   - Create a runtime folder inside protected
+  - Import the .sql in your MySQL

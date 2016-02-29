@@ -23,7 +23,7 @@
 
 	<?php echo $form->label($model,'imagen'); ?>
 	<?php $this->widget('CMultiFileUpload',array(
-		'accept'=>'jpeg|jpg|gif|png',
+		'accept'=>'jpeg|jpg|gif|png|svg',
 		'duplicate'=>'Duplicate file!',
 		'name'=>'picture',
 		'denied'=>'Invalid file type',

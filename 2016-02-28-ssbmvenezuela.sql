@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-01-2016 a las 17:59:27
+-- Tiempo de generación: 29-02-2016 a las 02:53:40
 -- Versión del servidor: 5.6.20
 -- Versión de PHP: 5.5.15
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ssbmvzla`
 --
-CREATE DATABASE IF NOT EXISTS `ssbmvzla` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci;
-USE `ssbmvzla`;
 
 -- --------------------------------------------------------
 
@@ -28,7 +26,6 @@ USE `ssbmvzla`;
 -- Estructura de tabla para la tabla `authassignment`
 --
 
-DROP TABLE IF EXISTS `authassignment`;
 CREATE TABLE IF NOT EXISTS `authassignment` (
   `itemname` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
   `userid` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
@@ -50,7 +47,6 @@ INSERT INTO `authassignment` (`itemname`, `userid`, `bizrule`, `data`) VALUES
 -- Estructura de tabla para la tabla `authitem`
 --
 
-DROP TABLE IF EXISTS `authitem`;
 CREATE TABLE IF NOT EXISTS `authitem` (
   `name` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
   `type` int(11) NOT NULL,
@@ -81,7 +77,6 @@ INSERT INTO `authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 -- Estructura de tabla para la tabla `authitemchild`
 --
 
-DROP TABLE IF EXISTS `authitemchild`;
 CREATE TABLE IF NOT EXISTS `authitemchild` (
   `parent` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
   `child` varchar(64) COLLATE utf8_spanish2_ci NOT NULL
@@ -106,7 +101,6 @@ INSERT INTO `authitemchild` (`parent`, `child`) VALUES
 -- Estructura de tabla para la tabla `estado`
 --
 
-DROP TABLE IF EXISTS `estado`;
 CREATE TABLE IF NOT EXISTS `estado` (
 `id` int(11) NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
@@ -135,7 +129,6 @@ INSERT INTO `estado` (`id`, `nombre`, `id_pais`) VALUES
 -- Estructura de tabla para la tabla `jugador`
 --
 
-DROP TABLE IF EXISTS `jugador`;
 CREATE TABLE IF NOT EXISTS `jugador` (
 `id` int(11) NOT NULL,
   `primer_nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
@@ -212,8 +205,8 @@ INSERT INTO `jugador` (`id`, `primer_nombre`, `primer_apellido`, `nick`, `id_est
 (61, 'Ricardo', 'Charre', 'RCharre', 6),
 (62, 'Edward', 'Suarez', 'Edd', 1),
 (63, 'Julio', 'Muñoz', 'JMuñoz', 6),
-(64, 'Diego', 'Portillo', 'MicroXti', 1),
-(65, 'Xti29', '', 'Xti29', 1),
+(64, 'Diego', 'Portillo', 'Sonic', 1),
+(65, 'Carlos', '', 'Xti23', 1),
 (66, 'Miguel', 'Lopez', 'Glitch', 1),
 (67, 'Gianfranco', 'Falzarano', 'Gian', 1),
 (69, 'ANDX', '', 'ANDX', 3),
@@ -240,7 +233,7 @@ INSERT INTO `jugador` (`id`, `primer_nombre`, `primer_apellido`, `nick`, `id_est
 (90, 'Roy', 'Patiño', 'Roy', 3),
 (92, 'Blay', '', 'Blay', 3),
 (93, 'Sebastian', 'Romero', 'Chevaca', 8),
-(94, 'Francisco', 'Rico', 'Chuly', 8),
+(94, 'Francisco', 'Rico', 'Chuli', 8),
 (95, 'Maikol', 'Aterio', 'Maikol', 9),
 (96, 'Rafael', 'Hoyer', 'BTO', 4),
 (97, 'Alfredo', 'Perez', 'Dozer', 10),
@@ -250,7 +243,6 @@ INSERT INTO `jugador` (`id`, `primer_nombre`, `primer_apellido`, `nick`, `id_est
 (101, 'Ruben', 'Torres', 'Lant', 10),
 (102, 'Eduardo', 'Gonzales', 'Igu', 10),
 (103, 'Oliver', 'Gallanti', 'FinalTaco', 10),
-(104, 'Hogaru', '', 'Hogaru', 6),
 (106, 'Fernando', 'Sanchez', 'Hotaru', 6),
 (107, 'Juan', 'Prieto', 'Bombix', 1),
 (108, 'Altair', '', 'Altair', 2),
@@ -291,14 +283,14 @@ INSERT INTO `jugador` (`id`, `primer_nombre`, `primer_apellido`, `nick`, `id_est
 (145, 'Monarco', '', 'Monarco', 2),
 (146, 'José Leonardo', '', 'Pelox', 1),
 (147, 'Luis Arturo', '', 'Palo', 1),
-(148, 'Alessandro', '', 'Kael', 1),
+(148, 'Alessandro', '', 'Kaelth', 1),
 (149, 'Juan', 'Hernandez', 'Fuma', 1),
 (150, 'Cristian', 'Moreno', 'Sixth Sense', 1),
-(151, 'Rami', '', 'Rami', 1),
-(152, 'Angel', '', 'Angel', 1),
-(153, 'Kiki', '', 'Kiki', 1),
+(151, 'José Manuel', 'Hernandez', 'Rami', 1),
+(152, 'Angel', 'Bracho', 'Angel', 1),
+(153, 'Lucas', 'Galleti', 'Kiki', 1),
 (154, 'Depth', '', 'Depth', 1),
-(155, 'Cum', '', 'Cum', 1),
+(155, 'Rommel', '', 'Cum', 1),
 (156, 'Hawlee', '', 'Hawlee', 1),
 (157, 'Rocky', '', 'Rocky', 1),
 (158, 'GM', '', 'GM', 1),
@@ -311,13 +303,12 @@ INSERT INTO `jugador` (`id`, `primer_nombre`, `primer_apellido`, `nick`, `id_est
 -- Estructura de tabla para la tabla `jugador_personaje`
 --
 
-DROP TABLE IF EXISTS `jugador_personaje`;
 CREATE TABLE IF NOT EXISTS `jugador_personaje` (
 `id` int(11) NOT NULL,
   `id_jugador` int(11) NOT NULL,
   `id_personaje` int(11) NOT NULL,
   `primario` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=211 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=216 ;
 
 --
 -- Volcado de datos para la tabla `jugador_personaje`
@@ -517,21 +508,25 @@ INSERT INTO `jugador_personaje` (`id`, `id_jugador`, `id_personaje`, `primario`)
 (193, 82, 13, 0),
 (194, 149, 19, 1),
 (195, 148, 2, 1),
-(196, 151, 20, 1),
-(197, 152, 20, 1),
-(198, 153, 20, 1),
+(196, 151, 21, 1),
+(197, 152, 15, 1),
+(198, 153, 1, 1),
 (199, 154, 20, 1),
-(200, 155, 20, 1),
+(200, 155, 10, 1),
 (201, 156, 20, 1),
 (202, 157, 20, 1),
-(203, 158, 20, 1),
+(203, 158, 5, 1),
 (204, 159, 20, 1),
 (205, 150, 5, 1),
 (206, 150, 2, 0),
 (207, 22, 19, 1),
 (208, 160, 19, 0),
 (209, 160, 1, 1),
-(210, 160, 15, 0);
+(210, 160, 15, 0),
+(212, 151, 2, 1),
+(213, 155, 23, 0),
+(214, 158, 2, 0),
+(215, 65, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -539,7 +534,6 @@ INSERT INTO `jugador_personaje` (`id`, `id_jugador`, `id_personaje`, `primario`)
 -- Estructura de tabla para la tabla `jugador_posicion_torneo`
 --
 
-DROP TABLE IF EXISTS `jugador_posicion_torneo`;
 CREATE TABLE IF NOT EXISTS `jugador_posicion_torneo` (
 `id` int(11) NOT NULL,
   `id_jugador` int(11) NOT NULL,
@@ -805,7 +799,6 @@ INSERT INTO `jugador_posicion_torneo` (`id`, `id_jugador`, `id_torneo`, `posicio
 (251, 85, 19, 5),
 (252, 52, 19, 7),
 (253, 78, 19, 7),
-(254, 104, 19, 9),
 (255, 43, 19, 9),
 (256, 6, 19, 9),
 (257, 86, 19, 9),
@@ -1084,7 +1077,6 @@ INSERT INTO `jugador_posicion_torneo` (`id`, `id_jugador`, `id_torneo`, `posicio
 -- Estructura de tabla para la tabla `jugador_rank_temp`
 --
 
-DROP TABLE IF EXISTS `jugador_rank_temp`;
 CREATE TABLE IF NOT EXISTS `jugador_rank_temp` (
 `id` int(11) NOT NULL,
   `id_jugador` int(11) NOT NULL,
@@ -1329,7 +1321,7 @@ INSERT INTO `jugador_rank_temp` (`id`, `id_jugador`, `puntos`, `posicion`, `stat
 (228, 11, 2030, 5, 0, '2016-01-01 04:15:39'),
 (229, 27, 2117, 1, 0, '2016-01-01 04:15:40'),
 (230, 8, 2096, 4, 0, '2016-01-01 04:15:40'),
-(231, 104, 1988, 0, 0, '2016-01-01 04:16:50'),
+(231, 106, 1988, 0, 0, '2016-01-01 04:16:50'),
 (232, 43, 2013, 0, 0, '2016-01-01 04:16:50'),
 (233, 41, 2026, 0, 0, '2016-01-01 04:16:50'),
 (234, 6, 2000, 0, 0, '2016-01-01 04:16:50'),
@@ -1364,7 +1356,7 @@ INSERT INTO `jugador_rank_temp` (`id`, `id_jugador`, `puntos`, `posicion`, `stat
 (263, 78, 1955, 0, 0, '2016-01-01 04:16:56'),
 (264, 74, 1964, 48, 0, '2016-01-01 04:16:56'),
 (265, 85, 2002, 0, 0, '2016-01-01 04:16:56'),
-(266, 104, 1976, 54, 1, '2016-01-01 04:16:56'),
+(266, 106, 1976, 54, 1, '2016-01-01 04:16:56'),
 (267, 52, 2016, 0, 0, '2016-01-01 04:16:57'),
 (268, 6, 1999, 20, 0, '2016-01-01 04:16:58'),
 (269, 48, 2023, 0, 0, '2016-01-01 04:16:58'),
@@ -1786,7 +1778,6 @@ INSERT INTO `jugador_rank_temp` (`id`, `id_jugador`, `puntos`, `posicion`, `stat
 -- Estructura de tabla para la tabla `jugador_ranking`
 --
 
-DROP TABLE IF EXISTS `jugador_ranking`;
 CREATE TABLE IF NOT EXISTS `jugador_ranking` (
 `id` int(11) NOT NULL,
   `id_jugador` int(11) NOT NULL,
@@ -1905,7 +1896,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (102, 106, 1976, 35, 0, '2016-01-01 04:17:11'),
 (103, 83, 1952, 45, 0, '2016-01-01 04:17:11'),
 (104, 74, 1964, 42, 0, '2016-01-01 04:17:11'),
-(105, 104, 1976, 36, 0, '2016-01-01 04:17:11'),
+(105, 106, 1976, 36, 0, '2016-01-01 04:17:11'),
 (106, 6, 1999, 20, 0, '2016-01-01 04:17:12'),
 (107, 86, 1968, 41, 0, '2016-01-01 04:17:12'),
 (108, 43, 1988, 24, 0, '2016-01-01 04:17:12'),
@@ -1940,7 +1931,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (137, 106, 1976, 40, 0, '2016-01-01 04:18:23'),
 (138, 83, 1952, 51, 0, '2016-01-01 04:18:23'),
 (139, 74, 1964, 48, 0, '2016-01-01 04:18:23'),
-(140, 104, 1976, 39, 0, '2016-01-01 04:18:23'),
+(140, 106, 1976, 39, 0, '2016-01-01 04:18:23'),
 (141, 86, 1968, 46, 0, '2016-01-01 04:18:23'),
 (142, 43, 1988, 29, 0, '2016-01-01 04:18:23'),
 (143, 48, 2022, 13, 0, '2016-01-01 04:18:23'),
@@ -1988,7 +1979,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (185, 5, 2002, 19, 0, '2016-01-01 04:32:28'),
 (186, 93, 2023, 12, 0, '2016-01-01 04:32:28'),
 (187, 83, 1952, 55, 0, '2016-01-01 04:32:28'),
-(188, 104, 1976, 39, 0, '2016-01-01 04:32:28'),
+(188, 106, 1976, 39, 0, '2016-01-01 04:32:28'),
 (189, 86, 1968, 51, 0, '2016-01-01 04:32:28'),
 (190, 43, 1988, 30, 0, '2016-01-01 04:32:28'),
 (191, 48, 2022, 13, 0, '2016-01-01 04:32:29'),
@@ -2044,7 +2035,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (241, 5, 2002, 20, 0, '2016-01-01 04:43:24'),
 (242, 93, 2023, 12, 0, '2016-01-01 04:43:24'),
 (243, 83, 1952, 58, 0, '2016-01-01 04:43:24'),
-(244, 104, 1976, 44, 0, '2016-01-01 04:43:24'),
+(244, 106, 1976, 44, 0, '2016-01-01 04:43:24'),
 (245, 86, 1968, 54, 0, '2016-01-01 04:43:24'),
 (246, 43, 1988, 33, 0, '2016-01-01 04:43:24'),
 (247, 48, 2022, 13, 0, '2016-01-01 04:43:24'),
@@ -2106,7 +2097,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (303, 5, 2002, 20, 0, '2016-01-01 04:52:48'),
 (304, 93, 2023, 13, 0, '2016-01-01 04:52:48'),
 (305, 83, 1952, 58, 0, '2016-01-01 04:52:48'),
-(306, 104, 1976, 47, 0, '2016-01-01 04:52:48'),
+(306, 106, 1976, 47, 0, '2016-01-01 04:52:48'),
 (307, 48, 2022, 14, 0, '2016-01-01 04:52:48'),
 (308, 41, 2054, 7, 0, '2016-01-01 04:52:48'),
 (309, 130, 1976, 43, 0, '2016-01-01 04:52:48'),
@@ -2169,7 +2160,7 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 (366, 5, 2002, 22, 1, '2016-01-01 04:53:51'),
 (367, 93, 2023, 13, 0, '2016-01-01 04:53:51'),
 (368, 83, 1952, 63, 1, '2016-01-01 04:53:51'),
-(369, 104, 1976, 54, 1, '2016-01-01 04:53:51'),
+(369, 106, 1976, 54, 1, '2016-01-01 04:53:51'),
 (370, 48, 2022, 14, 1, '2016-01-01 04:53:51'),
 (371, 130, 1976, 52, 1, '2016-01-01 04:53:51'),
 (372, 128, 1979, 45, 1, '2016-01-01 04:53:51'),
@@ -2233,7 +2224,6 @@ INSERT INTO `jugador_ranking` (`id`, `id_jugador`, `puntos`, `posicion`, `status
 -- Estructura de tabla para la tabla `pais`
 --
 
-DROP TABLE IF EXISTS `pais`;
 CREATE TABLE IF NOT EXISTS `pais` (
 `id` int(11) NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
@@ -2254,7 +2244,6 @@ INSERT INTO `pais` (`id`, `nombre`, `imagen`) VALUES
 -- Estructura de tabla para la tabla `personaje`
 --
 
-DROP TABLE IF EXISTS `personaje`;
 CREATE TABLE IF NOT EXISTS `personaje` (
 `id` int(11) NOT NULL,
   `nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
@@ -2299,7 +2288,6 @@ INSERT INTO `personaje` (`id`, `nombre`, `imagen`) VALUES
 -- Estructura de tabla para la tabla `pvp_set`
 --
 
-DROP TABLE IF EXISTS `pvp_set`;
 CREATE TABLE IF NOT EXISTS `pvp_set` (
 `id` int(11) NOT NULL,
   `id_jugador_1` int(11) NOT NULL,
@@ -2945,9 +2933,9 @@ INSERT INTO `pvp_set` (`id`, `id_jugador_1`, `id_jugador_2`, `id_jugador_ganador
 (624, 42, 49, 42, 18, 'LQ', 2038, 2020, 55, 2050, 2008),
 (625, 8, 42, 8, 18, 'LS', 2088, 2050, 56, 2099, 2039),
 (626, 8, 11, 8, 18, 'LF', 2099, 2040, 57, 2109, 2030),
-(627, 104, 43, 43, 19, 'W1R', 2000, 2001, 1, 1988, 2013),
+(627, 106, 43, 43, 19, 'W1R', 2000, 2001, 1, 1988, 2013),
 (628, 41, 6, 41, 19, 'W1R', 2014, 2012, 2, 2026, 2000),
-(629, 48, 106, 48, 19, 'W1R', 2012, 2000, 3, 2024, 1988),
+(629, 48, 120, 48, 19, 'W1R', 2012, 2000, 3, 2024, 1988),
 (630, 27, 86, 27, 19, 'W1R', 2117, 1975, 4, 2125, 1967),
 (631, 83, 52, 52, 19, 'W1R', 1976, 2000, 5, 1964, 2012),
 (632, 11, 74, 11, 19, 'W1R', 2030, 1989, 6, 2041, 1978),
@@ -2959,10 +2947,10 @@ INSERT INTO `pvp_set` (`id`, `id_jugador_1`, `id_jugador_2`, `id_jugador_ganador
 (638, 1, 41, 1, 19, 'WS', 2065, 2038, 12, 2077, 2026),
 (639, 27, 11, 27, 19, 'WS', 2134, 2052, 13, 2144, 2042),
 (640, 1, 27, 1, 19, 'WF', 2077, 2144, 14, 2092, 2129),
-(641, 6, 106, 6, 19, 'L1R', 2000, 1988, 15, 2012, 1976),
+(641, 6, 120, 6, 19, 'L1R', 2000, 1988, 15, 2012, 1976),
 (642, 86, 83, 86, 19, 'L1R', 1967, 1964, 16, 1979, 1952),
 (643, 78, 74, 78, 19, 'L1R', 1941, 1978, 17, 1955, 1964),
-(644, 85, 104, 85, 19, 'L12', 1990, 1988, 18, 2002, 1976),
+(644, 85, 106, 85, 19, 'L12', 1990, 1988, 18, 2002, 1976),
 (645, 52, 6, 52, 19, 'L12', 2003, 2012, 19, 2016, 1999),
 (646, 48, 86, 48, 19, 'L12', 2012, 1979, 20, 2023, 1968),
 (647, 43, 78, 78, 19, 'L12', 2002, 1955, 21, 1988, 1969),
@@ -3412,7 +3400,6 @@ INSERT INTO `pvp_set` (`id`, `id_jugador_1`, `id_jugador_2`, `id_jugador_ganador
 -- Estructura de tabla para la tabla `rights`
 --
 
-DROP TABLE IF EXISTS `rights`;
 CREATE TABLE IF NOT EXISTS `rights` (
   `itemname` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
   `type` int(11) NOT NULL,
@@ -3425,13 +3412,12 @@ CREATE TABLE IF NOT EXISTS `rights` (
 -- Estructura de tabla para la tabla `torneo`
 --
 
-DROP TABLE IF EXISTS `torneo`;
 CREATE TABLE IF NOT EXISTS `torneo` (
 `id` int(11) NOT NULL,
   `nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
   `id_estado` int(11) NOT NULL,
   `fecha` date NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=43 ;
 
 --
 -- Volcado de datos para la tabla `torneo`
@@ -3478,7 +3464,8 @@ INSERT INTO `torneo` (`id`, `nombre`, `id_estado`, `fecha`) VALUES
 (38, 'Road To National - Mérida', 8, '2015-11-15'),
 (39, 'FYRE #3', 1, '2015-11-28'),
 (40, 'FYRE #4', 1, '2015-12-26'),
-(41, 'Torneo Cookie Teórico #2', 9, '2015-10-24');
+(41, 'Torneo Cookie Teórico #2', 9, '2015-10-24'),
+(42, 'FYRE #5', 1, '2016-02-20');
 
 -- --------------------------------------------------------
 
@@ -3486,13 +3473,12 @@ INSERT INTO `torneo` (`id`, `nombre`, `id_estado`, `fecha`) VALUES
 -- Estructura de tabla para la tabla `torneo_imagen`
 --
 
-DROP TABLE IF EXISTS `torneo_imagen`;
 CREATE TABLE IF NOT EXISTS `torneo_imagen` (
 `id` int(11) NOT NULL,
   `id_torneo` int(11) NOT NULL,
   `descripcion` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
   `imagen` text COLLATE utf8_spanish2_ci NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=41 ;
 
 --
 -- Volcado de datos para la tabla `torneo_imagen`
@@ -3537,7 +3523,8 @@ INSERT INTO `torneo_imagen` (`id`, `id_torneo`, `descripcion`, `imagen`) VALUES
 (36, 38, 'Singles Bracket', '2015-11-15-RoadToNationalMerida.png'),
 (37, 37, 'Singles Bracket', '2015-09-26-GXP.jpeg'),
 (38, 39, 'Singles Bracket', '2015-11-28-fyre3.png'),
-(39, 40, 'Singles Bracket', '2015-12-26-fyre4.png');
+(39, 40, 'Singles Bracket', '2015-12-26-fyre4.png'),
+(40, 42, 'Singles Bracket', '2012-04-28-fyre5.svg');
 
 -- --------------------------------------------------------
 
@@ -3545,7 +3532,6 @@ INSERT INTO `torneo_imagen` (`id`, `id_torneo`, `descripcion`, `imagen`) VALUES
 -- Estructura de tabla para la tabla `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
 `id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
@@ -3683,7 +3669,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=161;
 -- AUTO_INCREMENT de la tabla `jugador_personaje`
 --
 ALTER TABLE `jugador_personaje`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=211;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=216;
 --
 -- AUTO_INCREMENT de la tabla `jugador_posicion_torneo`
 --
@@ -3718,12 +3704,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1094;
 -- AUTO_INCREMENT de la tabla `torneo`
 --
 ALTER TABLE `torneo`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `torneo_imagen`
 --
 ALTER TABLE `torneo_imagen`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --

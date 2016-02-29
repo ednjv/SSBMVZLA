@@ -189,10 +189,16 @@ Yii::app()->end();
 }
 
 public function actionVerImagenes($idTorneo){
-	$busq=TorneoImagen::model()->findAll('id_torneo=:idTorneo',array(':idTorneo'=>$idTorneo));
-	$arrImagenes=array();
-	foreach ($busq as $key => $value) {
-		$arrImagenes[]=array('imagen'=>"../../images/".$value->imagen);
+	$busqImagenes = TorneoImagen::model()->findAll('id_torneo=:idTorneo', array(':idTorneo'=>$idTorneo));
+	$arrImagenes = array();
+	foreach ($busqImagenes as $imagen) {
+		$arrImagenes[]=array(
+			'image'=>"../../images/".$imagen->imagen,
+			'imageOptions'=>array('class'=>'image-carousel'),
+			'caption'=>$imagen->descripcion,
+			'link'=>"../../images/".$imagen->imagen,
+			'captionOptions'=>array('class'=>'carousel-caption carousel-label')
+		);
 	}
 	return $this->renderPartial('verImagenes',array(
 		'arrImagenes'=>$arrImagenes
