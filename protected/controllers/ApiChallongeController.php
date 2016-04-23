@@ -124,7 +124,7 @@ class ApiChallongeController extends Controller
 			$ronda = $postResultados['ronda'][$i];
 			$numeroRonda = $postResultados['numeroRonda'][$i];
 			$idTorneo = $postResultados['idTorneoVzla'];
-			$modelPvpSet = new PvPSet;
+			$modelPvpSet = new PvpSet;
 			$modelPvpSet->id_jugador_1 = $jugador1;
 			$modelPvpSet->id_jugador_2 = $jugador2;
 			$modelPvpSet->id_jugador_ganador = $jugadorGanador;
