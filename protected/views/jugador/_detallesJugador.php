@@ -1,9 +1,18 @@
-<?php $this->widget('booster.widgets.TbDetailView',array(
+<?php
+	$nickVal = $model->nick;
+	if ($this->uniqueid === 'jugadorRanking') {
+		$nickVal = '<a href="../jugador/' . $model->id . '">' . $model->nick . '</a>';
+	}
+	$this->widget('booster.widgets.TbDetailView',array(
 	'data'=>$model,
 	'attributes'=>array(
 		'primer_nombre',
 		'primer_apellido',
-		'nick',
+		array(
+			'name'=>'nick',
+			'value'=>$nickVal,
+			'type'=>'raw'
+		),
 		array(
 			'name'=>'estadoAux',
 			'value'=>$model->idEstado->nombre,

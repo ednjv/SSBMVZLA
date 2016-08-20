@@ -30,7 +30,7 @@ public function accessRules()
 {
 return array(
 array('allow',
-	'actions'=>array('update','delete','index','create','view','admin','Elo','ImportRank'),
+	'actions'=>array('update','delete','index','create','view','admin','Elo','ImportRank','GetInactivePlayers'),
 	'users'=>array('Administrador'),
 ),
 array('allow',
@@ -249,5 +249,9 @@ public function actionObtenerPvpsJugadorTorneo(){
 		'pvpsJugadorTorneo'=>$pvpsJugadorTorneo,
 		'jugadorActual'=>$idJugador,
 	),false,false);
+}
+
+public function actionGetInactivePlayers(){
+	PvpSet::restarPuntosInactividad();
 }
 }
