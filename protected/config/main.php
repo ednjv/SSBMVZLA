@@ -96,7 +96,7 @@ return array(
 		'db'=>array(
 			'connectionString'=>'mysql:host=localhost;dbname=ssbmvzla',
 			'username'=>'root',
-			'password'=>'',
+			'password'=>'18946172',
 			'charset'=>'utf8',
 		),
 
