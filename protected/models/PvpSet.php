@@ -413,4 +413,85 @@ class PvpSet extends CActiveRecord
 			),
 		));
 	}
+
+	public function restarPuntosInactividad(){
+		$lastDateJugador1 = PvpSet::getPlayersLastDate('id_jugador_1', 'idJugador1');
+		$lastDateJugador2 = PvpSet::getPlayersLastDate('id_jugador_2', 'idJugador2');
+		$jugadoresLastSet = PvpSet::filtrarJugadores($lastDateJugador1, $lastDateJugador2);
+		$inactivePlayers = PvpSet::getInactivePlayers($jugadoresLastSet, 250); //
+		$i=1;
+		foreach ($inactivePlayers as $key => $value) {
+			$rank = JugadorRankTemp::model()->find(array(
+				'condition'=>'id_jugador=:idJugador and status=0',
+				'params'=>array(':idJugador'=>$key),
+				'order'=>'fecha desc'
+			));
+			if ($rank != null) {
+				$puntosPorInactividad = $rank->puntos-100;
+				echo $i.") Jugador: " . $rank->idJugador->nick;
+				echo ", Posicion: " . $rank->posicion;
+				echo ", Puntos: " . $rank->puntos;
+				echo ", Puntos por inactividad: " . $puntosPorInactividad;
+				echo "<br>";
+				$i++;
+				// $rank->status = 0;
+				// $rank->puntos = $puntosPorInactividad;
+				// $rank->save();
+			}
+		}
+	}
+
+	private function getPlayersLastDate($campoIdJugador, $relacionIdJugador){
+		$sets=PvpSet::model()->findAll(array(
+			'select'=>$campoIdJugador.', max(idTorneo.fecha) as elo_jugador_2',
+			// 'condition'=>'elo_jugador_1>0',
+			'group'=>$campoIdJugador,
+			'with'=>array(
+				'idTorneo',
+				$relacionIdJugador=>array(
+					'select'=>'nick'
+				)
+			),
+			'order'=>$campoIdJugador
+		));
+		$jugadorLastSet = array();
+		foreach ($sets as $set) {
+			$jugadorLastSet[$set->$campoIdJugador] = strtotime($set->elo_jugador_2);
+		}
+		return $jugadorLastSet;
+	}
+
+	private function filtrarJugadores($array1, $array2){
+		$arrayResultante = array();
+		foreach ($array1 as $key => $value) {
+			$keyJugadorExiste = array_key_exists($key, $array2);
+			if ($keyJugadorExiste) {
+				$fechaJugador1 = $value;
+				$fechaJugador2 = $array2[$key];
+				$esMayorLaFecha = $fechaJugador2 > $fechaJugador1 ? true : false;
+				if ($esMayorLaFecha) {
+					$arrayResultante[$key] = $fechaJugador2;
+				} else {
+					$arrayResultante[$key] = $fechaJugador1;
+				}
+			} else {
+				$arrayResultante[$key] = $value;
+			}
+		}
+		return $arrayResultante;
+	}
+
+	private function getInactivePlayers($jugadorLastSet, $dias){ //, $diasRango
+		$inactivePlayers = array();
+		foreach ($jugadorLastSet as $key => $value) {
+			$nick = Jugador::model()->findByPk($key)->nick;
+			$lastDate = date('Y-m-d', $value);
+			$diff=date_diff(date_create(date('Y-m-d')), date_create($lastDate));
+			$diasDiff=intval($diff->format("%a"));
+			if ($diasDiff > $dias) { // && $diasDiff < $diasRango
+				$inactivePlayers[$key] = $value;
+			}
+		}
+		return $inactivePlayers;
+	}
 }
