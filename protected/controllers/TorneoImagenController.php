@@ -67,14 +67,12 @@ $selectTorneos=Torneo::model()->selectTorneos();
 if(isset($_POST['TorneoImagen']))
 {
 $model->attributes=$_POST['TorneoImagen'];
-if($model->save()){
-	$images=CUploadedFile::getInstancesByName('picture');
-	if (isset($images) && count($images) > 0) {
-		foreach ($images as $image => $pic) {
-			$pic->saveAs(Yii::app()->getBasePath().'/../images/'.$pic->name);
-			$model->imagen=$pic->name;
-			$model->save();
-		}
+$images=CUploadedFile::getInstancesByName('picture');
+if (isset($images) && count($images) > 0) {
+	foreach ($images as $image => $pic) {
+		$pic->saveAs(Yii::app()->getBasePath().'/../images/'.$pic->name);
+		$model->imagen=$pic->name;
+		$model->save();
 	}
 	$user->setFlash('success', "Datos han sido guardados <strong>satisfactoriamente</strong>.");
 	$this->redirect(array('create'));
