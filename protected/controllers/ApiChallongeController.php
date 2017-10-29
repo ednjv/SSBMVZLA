@@ -80,7 +80,7 @@ class ApiChallongeController extends Controller
 			$posicionJugador->posicion = $posicionJugadorLocal;
 			$posicionJugador->save();
 		}
-		$jsonPartidos = json_decode($peticionPartidos, true);
+		$jsonPartidos = json_decode(json_encode($peticionPartidos), true);
 		$i = 0;
 		foreach($jsonPartidos as $key => $value){
 			$match = $value['match'];
