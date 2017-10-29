@@ -6,9 +6,9 @@
 		<span style="display:inline-block; float:right; font-weight:bold; margin-right:10px;">
 			<?php
 				if($data->id_jugador_ganador!=$jugadorActual){
-					echo "P ";
+					echo "W ";
 				}else{
-					echo "G";
+					echo "L ";
 				}
 			?>
 		</span>

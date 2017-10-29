@@ -1,0 +1,20 @@
+{
+  "autoload": {
+    "psr-0": {
+      "config": "./"
+    }
+  },
+  "require": {
+    "php": ">=5.1.0",
+    "vlucas/phpdotenv": "^2.4",
+    "yiisoft/yii": "1.1.16",
+    "php-curl-class/php-curl-class": "^7.4"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "mkdir ../assets",
+      "mkdir runtime",
+      "cp ../.env-template ../.env"
+    ]
+  }
+}

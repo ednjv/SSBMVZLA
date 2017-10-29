@@ -194,6 +194,6 @@ public function actionObtenerPosicionesTorneo(){
 	$posicionTorneo=JugadorPosicionTorneo::model()->getPosiciones($condicion, $parametros, $ordenar, $tamanoPag);
 	return $this->renderPartial('_posicionesTorneo',array(
 		'posicionTorneo'=>$posicionTorneo,
-	),false,true);
+	), false, false);
 }
 }

@@ -32,11 +32,11 @@ array('label'=>'Modificar', 'icon'=>'pencil','url'=>array('update','id'=>$model-
 		)); ?>
         <div id="pvpSet" class="panel panel-default">
             <div class="panel-heading">
-                <h4>Recórd Vs</h4>
+                <h4>Record Vs</h4>
             </div>
             <div class="panel-body">
                 VS<input id="buscar_jugador" class="form-control" type="text" name="jugadorId">
-                <br>        
+                <br>
                 <div id="result"></div>
             </div>
         </div>
@@ -86,7 +86,7 @@ array('label'=>'Modificar', 'icon'=>'pencil','url'=>array('update','id'=>$model-
         <h4 class="modal-title">Torneo</h4>
       </div>
       <div id="galeriaImagenes" class="modal-body">
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

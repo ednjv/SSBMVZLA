@@ -38,30 +38,30 @@
 	'htmlOptions'=>array('style'=>'margin-bottom:20px;')
 )); ?>
 <div>
-	<table class="items table table-striped tablaDetallesJugador">
-		<tr>
-			<td></td>
-			<th>Récord</th>
-			<th>Títulos</th>
-			<th>% de victorias</th>
-		</tr>
-		<tr>
-			<th><?php echo date('Y'); ?></th>
-			<td>
-				<?php echo $model->getVictorias($model->id, date('Y'))."-".$model->getDerrotas($model->id, date('Y')); ?>
-				<br><span style="color:#8899a6;">G-P</span>
-			</td>
-			<td><?php echo $model->getTitulos($model->id, date('Y')); ?></td>
-			<td><?php echo $model->getWinRate($model->id, date('Y')); ?></td>
-		</tr>
-		<tr>
-			<th>Carrera</th>
-			<td>
-				<?php echo $model->getVictorias($model->id)."-".$model->getDerrotas($model->id); ?>
-				<br><span style="color:#8899a6;">G-P</span>
-			</td>
-			<td><?php echo $model->getTitulos($model->id); ?></td>
-			<td><?php echo $model->getWinRate($model->id); ?></td>
-		</tr>
-	</table>
+  <table class="items table table-striped tablaDetallesJugador">
+    <tr>
+      <td></td>
+      <th>Record</th>
+      <th>Titles</th>
+      <th>Win rate</th>
+    </tr>
+    <tr>
+      <th><?php echo date('Y'); ?></th>
+      <td>
+        <?php echo $model->getVictorias($model->id, date('Y'))."-".$model->getDerrotas($model->id, date('Y')); ?>
+        <br><span style="color:#8899a6;">W-L</span>
+      </td>
+      <td><?php echo $model->getTitulos($model->id, date('Y')); ?></td>
+      <td><?php echo $model->getWinRate($model->id, date('Y')) . '%'; ?></td>
+    </tr>
+    <tr>
+      <th>All time</th>
+      <td>
+        <?php echo $model->getVictorias($model->id)."-".$model->getDerrotas($model->id); ?>
+        <br><span style="color:#8899a6;">W-L</span>
+      </td>
+      <td><?php echo $model->getTitulos($model->id); ?></td>
+      <td><?php echo $model->getWinRate($model->id) . '%'; ?></td>
+    </tr>
+  </table>
 </div>

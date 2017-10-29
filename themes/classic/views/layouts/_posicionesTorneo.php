@@ -11,7 +11,7 @@
 				break;
 		}
 	?>
-	<?php echo "<b>".$data->posicion.")</b>"; ?>
+	<?php echo "<b>".$data->posicion.".</b>"; ?>
 	<?php
 		if($view==""){
 			echo CHtml::link($data->idJugador->nick,'#',array(

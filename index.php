@@ -1,11 +1,19 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$loader = require(dirname(__FILE__) . '/protected/vendor/autoload.php');
+Yii::$classMap = $loader->getClassMap();
+
+// load custom environment variables
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/../yii-1.1.16.bca042/framework/yii.php';
+$yii=dirname(__FILE__).'/protected/vendor/yiisoft/yii/framework/yii.php';
 $config=dirname(__FILE__).'/protected/config/main.php';
-if ($_SERVER['HTTP_HOST'] === "www.ssbmvenezuela.byethost11.com") {
-	$config=dirname(__FILE__).'/protected/config/main.production.php';
-}
 
 // remove the following lines when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG',true);

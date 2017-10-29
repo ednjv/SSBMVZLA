@@ -156,3 +156,11 @@ body > .container-fluid {
 .listaJugador{
     width: 100%;
 }
+
+.relative {
+  position: relative;
+}
+
+.table>tbody>tr>td, table>tbody>tr>th {
+  vertical-align: middle !important;
+}

@@ -62,10 +62,10 @@ class Torneo extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
+			'nombre' => 'Name',
 			'id_estado' => 'Id Estado',
-			'fecha' => 'Fecha',
-			'estadoAux' => 'Estado',
+			'fecha' => 'Date',
+			'estadoAux' => 'Location',
 		);
 	}
 

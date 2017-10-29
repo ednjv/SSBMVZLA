@@ -62,12 +62,12 @@ class JugadorRanking extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'id_jugador' => 'Id Jugador',
-			'puntos' => 'Puntos',
-			'posicion' => 'Posición',
+			'puntos' => 'Points',
+			'posicion' => 'Rank',
 			'status' => 'Status',
-			'nickAux' => 'Jugador',
-			'cambio' => 'Cambio (Último Torneo)',
-			'personajeJugador' => 'Primario',
+			'nickAux' => 'Player',
+			'cambio' => 'Change',
+			'personajeJugador' => 'Main',
 		);
 	}
 
@@ -153,7 +153,7 @@ class JugadorRanking extends CActiveRecord
 	/**
 	* Función que retorna el cambio de posición de un jugador con respecto al ranking anterior
 	* @param idJugador integer id del jugador a calcular el cambio con respecto al ranking anterior
-	* @return 
+	* @return
 	*/
 	public function getCambio($idjugador){
 		$rankUltimo=JugadorRanking::model()->find(array(

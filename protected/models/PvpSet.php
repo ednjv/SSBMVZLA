@@ -376,19 +376,19 @@ class PvpSet extends CActiveRecord
 
 	public function chartFormat($model,$jugId){
 		if($model->idJugador1->id==$jugId && $model->idJugadorGanador->id==$jugId){
-			$diferencia="Ganó ";
+			$diferencia="Won ";
 			$diferencia.=$model->nuevo_elo_1-$model->elo_jugador_1;
 		}else{
 			if($model->idJugador2->id==$jugId && $model->idJugadorGanador->id==$jugId){
-				$diferencia="Ganó ";
+				$diferencia="Won ";
 				$diferencia.=$model->nuevo_elo_2-$model->elo_jugador_2;
 			}else{
 				if($model->idJugador1->id==$jugId){
-					$diferencia="Perdió ";
+					$diferencia="Lost ";
 					$diferencia.=$model->elo_jugador_1-$model->nuevo_elo_1;
 				}else{
 					if($model->idJugador2->id==$jugId){
-						$diferencia="Perdió ";
+						$diferencia="Lost ";
 						$diferencia.=$model->elo_jugador_2-$model->nuevo_elo_2;
 					}
 				}

@@ -73,15 +73,16 @@ class Jugador extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'primer_nombre' => 'Nombre',
-			'primer_apellido' => 'Apellido',
-			'nick' => 'Nick',
-			'id_estado' => 'Id Estado',
-			'estadoAux' => 'Estado',
-			'paisAux' => 'País',
-			'personajePrimario' => 'Personaje Primario',
-			'winrateAux' => '% de Victorias',
-			'recordAux' => 'Récord',
+			'primer_nombre' => 'Name',
+			'primer_apellido' => 'Last name',
+			'nick' => 'Nickname',
+			'id_estado' => 'Id state',
+			'estadoAux' => 'State',
+			'paisAux' => 'Country',
+			'personajePrimario' => 'Main',
+      'personajes' => 'Characters',
+			'winrateAux' => 'Win rate',
+			'recordAux' => 'Record',
 		);
 	}
 
@@ -265,7 +266,7 @@ class Jugador extends CActiveRecord
 			'condition'=>'(id_jugador_1=:idJugadorActual OR id_jugador_2=:idJugadorActual) AND (id_jugador_1=:idJugadorComparar OR id_jugador_2=:idJugadorComparar) AND id_jugador_ganador!=:idJugadorActual',
 			'params'=>array(':idJugadorActual'=>$idJugadorActual,':idJugadorComparar'=>$idJugadorComparar),
 		));
-		return $victorias." G - ".$loses. " P";
+		return $victorias." W - ".$loses. " L";
 	}
 
 	public function getWinRate($idJugador, $ano=""){

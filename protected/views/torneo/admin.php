@@ -1,5 +1,5 @@
 <?php $this->Widget('booster.widgets.TbPanel', array(
-	    'title' => 'Torneos',
+	    'title' => 'Tournaments',
     	'headerIcon' => 'icon-th-list ',
     	'headerHtmlOptions'=>array('style'=>'padding-bottom:5px;'),
     	'headerButtons' => array(

@@ -61,7 +61,7 @@ class JugadorPosicionTorneo extends CActiveRecord
 			'id' => 'ID',
 			'id_jugador' => 'Id Jugador',
 			'id_torneo' => 'Id Torneo',
-			'posicion' => 'Posicion',
+			'posicion' => 'Place',
 		);
 	}
 

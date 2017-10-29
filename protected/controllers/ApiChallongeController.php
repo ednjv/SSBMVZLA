@@ -49,20 +49,19 @@ class ApiChallongeController extends Controller
 		));
 	}
 
-	private function procesarListaJugadores($apiForm, &$listaJugadores)
-	{
-		$selectJugadores = Jugador::model()->selectJugadores();
-		$selectTorneos = Torneo::model()->selectTorneos();
-		$idTorneo = $apiForm['idTorneo'];
-		$peticionParticipantes = ApiChallonge::getTorneoParticipantes($idTorneo);
-		$jsonParticipantes = json_decode($peticionParticipantes, true);
-		$listaJugadores = $this->renderPartial('_listaJugadores', array(
-			'idTorneo'=>$idTorneo,
-			'jsonParticipantes'=>$jsonParticipantes,
-			'selectJugadores'=>$selectJugadores,
-			'selectTorneos'=>$selectTorneos
-		), true, false);
-	}
+	private function procesarListaJugadores($apiForm, &$listaJugadores) {
+    $selectJugadores = Jugador::model()->selectJugadores();
+    $selectTorneos = Torneo::model()->selectTorneos();
+    $idTorneo = $apiForm['idTorneo'];
+    $peticionParticipantes = ApiChallonge::getTorneoParticipantes($idTorneo);
+    $jsonParticipantes = json_decode(json_encode($peticionParticipantes), true);
+    $listaJugadores = $this->renderPartial('_listaJugadores', array(
+     'idTorneo'=>$idTorneo,
+     'jsonParticipantes'=>$jsonParticipantes,
+     'selectJugadores'=>$selectJugadores,
+     'selectTorneos'=>$selectTorneos
+   ), true, false);
+  }
 
 	private function procesarListaPartidos($postJugadorApi, $postJugadorLocal, $postTorneo, &$listaPartidos)
 	{

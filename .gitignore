@@ -1,2 +1,5 @@
 assets/
 protected/runtime
+composer.phar
+vendor/
+.env

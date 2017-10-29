@@ -248,7 +248,7 @@ public function actionObtenerPvpsJugadorTorneo(){
 	return $this->renderPartial('_pvpsJugadorTorneo',array(
 		'pvpsJugadorTorneo'=>$pvpsJugadorTorneo,
 		'jugadorActual'=>$idJugador,
-	),false,false);
+	), false, false);
 }
 
 public function actionGetInactivePlayers(){

@@ -21,12 +21,12 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo $themeUrl.'/img/smash.png'; ?>">
 
-	<!-- CSS -->
-	<?php $cs->registerCssFile($themeUrl . '/css/main.css'); ?>
-	<?php $cs->registerCssFile($baseUrl . '/js/fancybox/source/jquery.fancybox.css'); ?>
+  <!-- CSS -->
+  <?php $cs->registerCssFile($themeUrl . '/css/main.css'); ?>
+  <?php $cs->registerCssFile($baseUrl . '/js/fancybox/source/jquery.fancybox.css'); ?>
 
-	<!-- JS -->
-	<?php $cs->registerScriptFile($baseUrl . '/js/ChartJs/Chart.js'); ?>
+  <!-- JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 	<?php $cs->registerScriptFile($baseUrl . '/js/fancybox/source/jquery.fancybox.js'); ?>
 	<?php $cs->registerScriptFile($baseUrl . '/js/utilidades.js'); ?>
 	<?php $cs->registerPackage('select2'); ?>
@@ -46,7 +46,7 @@
 					'encodeLabel'=>false,
 					'items'=>array(
 						array(
-							'label'=>'Jugadores',
+							'label'=>'Players',
 							'url'=>array('jugador/admin'),
 						),
 						array(
@@ -54,7 +54,7 @@
 							'url'=>array('jugadorRanking/admin'),
 						),
 						array(
-							'label'=>'Torneos',
+							'label'=>'Tournaments',
 							'url'=>array('torneo/admin'),
 						),
 						array(
@@ -82,20 +82,20 @@
 									'url'=>array('jugadorPosicionTorneo/admin'),
 								),
 								array(
-									'label'=>'Personajes',
+									'label'=>'Characters',
 									'url'=>array('personaje/admin'),
 								),
 								array(
-									'label'=>'Estados',
+									'label'=>'States',
 									'url'=>array('/estado'),
 									'active'=>Yii::app()->controller->id=='estado'
 								),
 								array(
-									'label'=>'Países',
+									'label'=>'Countries',
 									'url'=>array('pais/admin'),
 								),
 								array(
-									'label'=>'Api',
+									'label'=>'Challonge Import',
 									'url'=>array('ApiChallonge/index'),
 								)
 							)
@@ -121,7 +121,7 @@
             )
         ));
 	?>
-	<div class="container-fluid"> 
+	<div class="container-fluid">
 		<div id="main">
 			<!-- BREADCRUMBS -->
 			<?php
@@ -145,12 +145,12 @@
 				}
 			?>
 			<!-- CONTENT -->
-			<?php echo $content; ?> 
+			<?php echo $content; ?>
 		</div>
 	</div>
-	<div class="footer"> 
+	<div class="footer">
 		<div class="container-fluid">
 			<p>SSBM Venezuela 2015</p>
-		</div>    
+		</div>
 	</div>
 </body>

@@ -183,20 +183,20 @@ Yii::app()->end();
 }
 }
 
-public function actionGetChart(){
-	$id=$_POST['id'];
-	if($id!=""){
-		$rankJugId=JugadorRanking::model()->findByPk($id);
-		$jugador=Jugador::model()->findByPk($rankJugId->id_jugador);
-		$sets=PvpSet::model()->chartSets($rankJugId->id_jugador);
-		$vsJugador=PvpSet::model()->chartVsJugadores($sets,$jugador->id);
-		$ptsVs=PvpSet::model()->chartPtsVs($sets,$jugador->id);
-		$this->renderPartial('_chartJug',array(
-			'sets'=>$sets,
-			'jugador'=>$jugador,
-			'vsJugador'=>$vsJugador,
-			'ptsVs'=>$ptsVs,
-		),false,true);
+public function actionGetChart() {
+	$id = $_POST['id'];
+	if ($id !== '') {
+		$rankJugId = JugadorRanking::model()->findByPk($id);
+		$jugador = Jugador::model()->findByPk($rankJugId->id_jugador);
+		$sets = PvpSet::model()->chartSets($rankJugId->id_jugador);
+		$vsJugador = PvpSet::model()->chartVsJugadores($sets,$jugador->id);
+		$ptsVs = PvpSet::model()->chartPtsVs($sets,$jugador->id);
+		$this->renderPartial('_chartJug', array(
+			'sets' => $sets,
+			'jugador' => $jugador,
+			'vsJugador' => $vsJugador,
+			'ptsVs' => $ptsVs,
+		), false, true);
 	}
 }
 }

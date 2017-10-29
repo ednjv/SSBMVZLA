@@ -53,7 +53,7 @@ $countSets=PvpSet::model()->findAll(array(
 	'params'=>array(':id'=>$id),
 	'with'=>array('idTorneo'),
 	'order'=>'idTorneo.fecha desc, t.id desc',
-));	
+));
 $countTorneos=PvpSet::model()->count(array(
 	'condition'=>'id_jugador_1=:id OR id_jugador_2=:id',
 	'params'=>array(':id'=>$id),
@@ -216,7 +216,7 @@ public function actionCompararJugador(){
 	if($jugadorActual!=$jugadorComparar){
 		$recordVs=Jugador::model()->getRecordVs($jugadorActual,$jugadorComparar);
 	}else{
-		$recordVs="0 G - 0 P";
+		$recordVs="0 W - 0 L";
 	}
 	$allSets=PvpSet::model()->historiaVs($jugadorActual,$jugadorComparar);
 	return $this->renderPartial('_vsJugador',array(

@@ -1,12 +1,11 @@
 <?php
-error_reporting(5);
 class UserController extends Controller
 {
 	/**
 	 * @var string the default action for the controller.
 	 */
 	public $defaultAction = 'admin';
-	
+
 	/**
 	 * @return array action filters
 	 */
@@ -16,7 +15,7 @@ class UserController extends Controller
 			'rights', // perform access control for CRUD operations
 			);
 	}
-	
+
 	public function actions()
 	{
 		return array(
@@ -26,10 +25,10 @@ class UserController extends Controller
 				)
 			);
 	}
-	
+
         /**
          * Returns all recent unread notifications
-         *  
+         *
          */
         public function actionGetNotifications(){
         	$model = new Notification;
@@ -40,7 +39,7 @@ class UserController extends Controller
         			'condition'=>'receiver=:_r AND status=:_s',
         			'limit'=>5,
         			'params'=>array(
-        				':_r'=>Yii::app()->user->getName(), 
+        				':_r'=>Yii::app()->user->getName(),
         				':_s'=>0
         				),
         			)
@@ -82,7 +81,7 @@ class UserController extends Controller
 
 		$this->render('_flashCard',array());
 	}
-	
+
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -92,11 +91,11 @@ class UserController extends Controller
 		$model=new User;
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
-		
+
 		if ($model->saveUsuario($_POST['User']))
-			
+
 			$this->redirect(array('view','id'=>$model->id));
-		
+
 		$this->render('create',array(
 			'model'=>$model,
 			));
@@ -111,9 +110,9 @@ class UserController extends Controller
 	{
 		$user = Yii::app()->getUser();
 		if ($user->checkAccess('Admin')){  $user= $id; } else { $user= Yii::app()->user->id;}
-		
+
 		$model=$this->loadModel($user);
-		
+
                 // Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
@@ -124,21 +123,21 @@ class UserController extends Controller
 			'model'=>$model,
 			));
 	}
-	
+
 	public function actionUpdatePassword($id)
 	{
 		$user = Yii::app()->getUser();
 		if ($user->checkAccess('Admin')){  $user= $id; } else { $user= Yii::app()->user->id;}
 
 
-		$model = new UserUpdatePassword;              
+		$model = new UserUpdatePassword;
 
 
 		if ($model->UpdatePassword($_POST['UserUpdatePassword'],$user))
-			$this->redirect(array('view','id'=>$user)); 
+			$this->redirect(array('view','id'=>$user));
 
 		$this->render('updatePassword',array(
-			'model'=>$model, 
+			'model'=>$model,
 			'user_id'=>$user,
 			));
 	}
@@ -155,7 +154,7 @@ class UserController extends Controller
 			}
 		} else {
 			echo 'Usuario Administrador';
-		}  
+		}
 	}
 
 	/**
@@ -166,7 +165,7 @@ class UserController extends Controller
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
-		
+
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

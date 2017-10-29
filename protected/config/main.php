@@ -24,12 +24,12 @@ return array(
 		'application.components.*',
 		'application.extensions.*',
 		'application.modules.rights.*',
-		'application.modules.rights.components.*',
+		'application.modules.rights.components.*'
 	),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		
+
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'123',
@@ -50,11 +50,6 @@ return array(
 
 	// application components
 	'components'=>array(
-		'curl' => array(
-			'class' => 'ext.curl-master.Curl',
-			'options' => array(/* additional curl options */),
-		),
-
 		'user'=>array(
 			// enable cookie-based authentication
 			'class'=>'RWebUser',
@@ -94,9 +89,9 @@ return array(
 
 		// database settings are configured in database.php
 		'db'=>array(
-			'connectionString'=>'mysql:host=localhost;dbname=ssbmvzla',
-			'username'=>'root',
-			'password'=>'18946172',
+			'connectionString'=>'mysql:host='.getenv('DB_URL').';dbname='.getenv('DB_NAME'),
+			'username'=>getenv('DB_USER'),
+			'password'=>getenv('DB_PASSWORD'),
 			'charset'=>'utf8',
 		),
 
