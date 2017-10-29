@@ -251,7 +251,7 @@ public function actionObtenerPvpsJugadorTorneo(){
 	), false, false);
 }
 
-public function actionGetInactivePlayers(){
-	PvpSet::restarPuntosInactividad();
+public function actionGetInactivePlayers($daysSince = 250, $daysUntil = 0, $save = 'false', $points = 100, $remove = 'false') {
+	PvpSet::restarPuntosInactividad($daysSince, $daysUntil, $save, $points, $remove);
 }
 }
