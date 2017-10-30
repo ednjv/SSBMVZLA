@@ -66,30 +66,30 @@ class ApiChallongeController extends Controller
 	private function procesarListaPartidos($postJugadorApi, $postJugadorLocal, $postTorneo, &$listaPartidos)
 	{
 		$selectTorneos = Torneo::model()->selectTorneos();
-		$peticionPartidos = ApiChallonge::getPartidoTorneo($postTorneo['idTorneo']);
+		$peticionPartidos = json_encode(ApiChallonge::getPartidoTorneo($postTorneo['idTorneo']));
 		$lengthJugadores = count($postJugadorApi);
 		for($i=0; $i < $lengthJugadores; $i++){
 			$jugadorApi = $postJugadorApi[$i];
 			$jugadorLocal = $postJugadorLocal['jugadorId'][$i];
 			$idTorneoLocal = $postJugadorLocal['idTorneoVzla'];
 			$posicionJugadorLocal = $postJugadorLocal['posicionJugador'][$i];
-			$peticionPartidos = str_replace($jugadorApi, $jugadorLocal, $peticionPartidos);
-			$posicionJugador = new JugadorPosicionTorneo;
-			$posicionJugador->id_jugador = $jugadorLocal;
-			$posicionJugador->id_torneo = $idTorneoLocal;
-			$posicionJugador->posicion = $posicionJugadorLocal;
-			$posicionJugador->save();
-		}
-		$jsonPartidos = json_decode(json_encode($peticionPartidos), true);
-		$i = 0;
-		foreach($jsonPartidos as $key => $value){
-			$match = $value['match'];
-			$player1Id = $match['player1_id'];
-			$player2Id = $match['player2_id'];
-			$winnerId = $match['winner_id'];
-			$ronda = $match['identifier'];
-			$numeroRonda = $match['round'];
-			$jugadorVzla1 = Jugador::model()->findByPk($player1Id);
+      $peticionPartidos = str_replace($jugadorApi, $jugadorLocal, $peticionPartidos);
+      $posicionJugador = new JugadorPosicionTorneo;
+      $posicionJugador->id_jugador = $jugadorLocal;
+      $posicionJugador->id_torneo = $idTorneoLocal;
+      $posicionJugador->posicion = $posicionJugadorLocal;
+      $posicionJugador->save();
+    }
+    $jsonPartidos = json_decode($peticionPartidos, true);
+    $i = 0;
+    foreach($jsonPartidos as $key => $value){
+      $match = $value['match'];
+      $player1Id = $match['player1_id'];
+      $player2Id = $match['player2_id'];
+      $winnerId = $match['winner_id'];
+      $ronda = $match['identifier'];
+      $numeroRonda = $match['round'];
+      $jugadorVzla1 = Jugador::model()->findByPk($player1Id);
 			$jugadorVzla2 = Jugador::model()->findByPk($player2Id);
 			$ganadorVzla = Jugador::model()->findByPk($winnerId);
 			$listaPartidos .= $this->renderPartial('_listaPartidos', array(

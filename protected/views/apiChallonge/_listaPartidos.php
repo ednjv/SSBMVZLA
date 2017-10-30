@@ -4,9 +4,9 @@
 	Vs.
 	<?php echo $jugadorVzla2->nick; ?>
 	:
-	<span class="required">
+	<b class="text-success">
 		<?php echo $ganadorVzla->nick; ?>
-	</span>
+	</b>
 	<?php echo CHtml::hiddenField('ResultadoPvP[jugador1][' . $i . ']', $player1Id); ?>
 	<?php echo CHtml::hiddenField('ResultadoPvP[jugador2][' . $i . ']', $player2Id); ?>
 	<?php echo CHtml::hiddenField('ResultadoPvP[jugadorGanador][' . $i . ']', $winnerId); ?>
