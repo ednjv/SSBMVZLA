@@ -14,8 +14,8 @@
 		</span>
 		<span style="display:inline-block; float:right; font-weight:bold; margin-right:10px;">
 			<?php
-				if($data->id_jugador_ganador!=$model->id){
-					echo "W ";
+				if($data->id_jugador_ganador==$model->id){
+					echo "W";
 				}else{
 					echo "L";
 				}

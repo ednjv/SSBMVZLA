@@ -5,10 +5,10 @@
 		</span>
 		<span style="display:inline-block; float:right; font-weight:bold; margin-right:10px;">
 			<?php
-				if($data->id_jugador_ganador!=$jugadorActual){
-					echo "W ";
+				if($data->id_jugador_ganador==$jugadorActual){
+					echo "W";
 				}else{
-					echo "L ";
+					echo "L";
 				}
 			?>
 		</span>
