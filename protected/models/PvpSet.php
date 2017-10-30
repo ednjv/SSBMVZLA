@@ -353,10 +353,10 @@ class PvpSet extends CActiveRecord
 		foreach($model as $set){
 			if($set->idJugador1->id==$jugId){
 				$diferencia=PvPSet::model()->chartFormat($set,$jugId);
-				$vsJugadores[]=$set->idJugador2->nick."-".$set->idTorneo->nombre."-".$diferencia;
+				$vsJugadores[]=$set->idJugador2->nick."||".$set->idTorneo->nombre."||".$diferencia;
 			}else{
 				$diferencia=PvPSet::model()->chartFormat($set,$jugId);
-				$vsJugadores[]=$set->idJugador1->nick."-".$set->idTorneo->nombre."-".$diferencia;
+				$vsJugadores[]=$set->idJugador1->nick."||".$set->idTorneo->nombre."||".$diferencia;
 			}
 		}
 		return $vsJugadores;

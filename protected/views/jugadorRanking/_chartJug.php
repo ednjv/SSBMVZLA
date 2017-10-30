@@ -13,37 +13,7 @@
 var vsJugador = JSON.parse('<?php echo json_encode($vsJugador); ?>');
 var ptsVs = JSON.parse('<?php echo json_encode($ptsVs); ?>');
 
-var options = {
-  type: 'line',
-  data: {
-    labels: vsJugador,
-    datasets: [
-      {
-        fillColor: "#A9E2F3",
-        strokeColor: "#2E9AFE",
-        pointColor: "#428bca",
-        pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(220,220,220,1)",
-        data: ptsVs
-      },
-    ]
-  },
-  options: {
-    datasetFill : true,
-
-    // Boolean - whether or not the chart should be responsive and resize when the browser does.
-    responsive: true,
-    maintainAspectRatio : false,
-
-    // String - Template string for single tooltips
-    tooltipTemplate: "<%if (label){%><%= label.split('-')[1]+', '+label.split('-')[2] %>: <%}%><%= value %>",
-  }
-}
-
 var ctx = document.getElementById("myChart").getContext("2d");
-// var myNewChart = new Chart(ctx, options);
-
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -79,7 +49,7 @@ var myChart = new Chart(ctx, {
       xAxes: [{
         ticks: {
           callback: function(value, index, values) {
-            return value.split('-')[0];
+            return value.split('||')[0];
           }
         }
       }]
@@ -99,22 +69,19 @@ var myChart = new Chart(ctx, {
       footerFontSize: 10,
       callbacks: {
         title: function(tooltipItem, data) {
-          var tournament = data['labels'][tooltipItem[0]['index']].split('-')[1];
+          var tournament = data['labels'][tooltipItem[0]['index']].split('||')[1];
           return tournament;
         },
         afterTitle: function(tooltipItem, data) {
-          var playerName = 'vs. ' + data['labels'][tooltipItem[0]['index']].split('-')[0];
+          var playerName = 'vs. ' + data['labels'][tooltipItem[0]['index']].split('||')[0];
           return playerName;
         },
-        beforeLabel: function() {
-          return '';
-        },
         label: function(tooltipItem, data) {
-          var ratingResult = data['labels'][tooltipItem['index']].split('-')[2];
+          var ratingResult = data['labels'][tooltipItem['index']].split('||')[2];
           return ratingResult;
         },
         labelTextColor: function(tooltipItem, chart) {
-          var ratingResult = chart.config.data['labels'][tooltipItem['index']].split('-')[2];
+          var ratingResult = chart.config.data['labels'][tooltipItem['index']].split('||')[2];
           if (ratingResult.indexOf('Won') !== -1) {
             return '#0A0';
           } else {
